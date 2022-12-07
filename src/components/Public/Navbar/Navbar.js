@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../PublicDashboard/components/Buttton/Button";
-import './Navbar.css'
 
-function Navbar() {
+import Modal from "../Register/Modal/Modal";
+import "./Navbar.css";
+
+function Navbar({ user }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+
   const handleNav = () => {
     setClick(!click);
   };
@@ -15,19 +18,18 @@ function Navbar() {
     setClick(false);
   };
 
-  const showButton = ()=>{
-    if(window.innerWidth <=960){
-        setButton(false)
-    }else{
-        setButton(true)
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
     }
-  }
+  };
   useEffect(() => {
     showButton();
   }, []);
 
-
-  window.addEventListener('resize',showButton)
+  window.addEventListener("resize", showButton);
 
   return (
     <>
@@ -40,41 +42,36 @@ function Navbar() {
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-          <li className='nav-item'>
-              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+            <li className="nav-item">
+              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 Home
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link
-                to='/releases'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
+            <li className="nav-item">
+              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 New Releases
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link
-                to='/stream'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
+            <li className="nav-item">
+              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 Stream
               </Link>
             </li>
-
-            <li>
-              <Link
-                to='/sign-up'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Sign Up
-              </Link>
-            </li>
           </ul>
-          {button && <Button buttonStyle="btn--outline">Sign Up</Button>}
+          {user ? (
+            <>
+              <li className="listItem">{user.displayName}</li>
+              <li className="listItem" ></li>
+            </>
+          ) : (
+            <>
+              {button && (
+                <>
+                  <Modal open={openModal} onClose={() => setOpenModal(false)} />
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </>
