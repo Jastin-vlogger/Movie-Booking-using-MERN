@@ -1,4 +1,3 @@
-import User from '../../screens/admin/users/User'
 import React from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "../../thems";
@@ -6,8 +5,9 @@ import Topbar from "../../components/Admin/global/Topbar";
 import "./app.css";
 import SideBar from "../../components/Admin/global/SideBar";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import Movies from '../../screens/admin/users/Movies';
 
-function Theater() {
+function Movie() {
     const [theme, colorMode] = useMode();
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -18,7 +18,7 @@ function Theater() {
           <SideBar />
           <main className="content">
             <Topbar></Topbar>
-            <User />
+            <Movies />
           </main>
         </div>
       </ProSidebarProvider>
@@ -27,4 +27,4 @@ function Theater() {
   )
 }
 
-export default Theater
+export default Movie

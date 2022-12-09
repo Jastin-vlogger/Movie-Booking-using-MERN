@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../thems";
 import { mockDataTeam } from "../../../data/mockdata";
@@ -6,8 +6,10 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Admin/Header/Header";
+import {useNavigate} from 'react-router-dom'
 
-function User() {
+function Movies() {
+  const navigate = useNavigate()
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const columns = [
@@ -70,7 +72,8 @@ function User() {
   
     return (
       <Box m="20px">
-        <Header title="TEAM" subtitle="Managing the Team Members" />
+        <Button variant="contained" style={{float:"right"} } onClick={()=>{navigate('/admin/movies/addMovies')}}>Add Movies</Button>
+        <Header title="Movies" subtitle="Manage Movies" />
         <Box
           m="40px 0 0 0"
           height="75vh"
@@ -106,4 +109,4 @@ function User() {
     );
 }
 
-export default User
+export default Movies

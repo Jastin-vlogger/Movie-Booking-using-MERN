@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddMovies from "./pages/Admin/AddMovies";
 import Dashboards from "./pages/Admin/Dashboard";
+import Movie from "./pages/Admin/Movie";
 import HomePage from "./pages/Public/HomePage/HomePage";
-import User from "./screens/admin/users/User";
 
 
 function Routess() {
@@ -13,7 +14,9 @@ function Routess() {
 
             {/* admin routes */}
             <Route exact path="/admin" element={<Dashboards />} />
-            <Route exact path="/theaters" element={<User />} />
+            <Route exact path="/admin/movies" element={<Movie />} />
+            <Route exact path="/admin/movies/addMovies" element={<AddMovies />} />
+            
             
           </Routes>
         
