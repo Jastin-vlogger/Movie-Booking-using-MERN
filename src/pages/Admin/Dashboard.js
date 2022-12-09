@@ -5,8 +5,9 @@ import Topbar from "../../components/Admin/global/Topbar";
 import "./app.css";
 import SideBar from "../../components/Admin/global/SideBar";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import Dashboard from "../../screens/admin/dashboard/Dashboard";
 
-function Dashboard() {
+function Dashboards() {
   const [theme, colorMode] = useMode();
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -17,6 +18,7 @@ function Dashboard() {
             <SideBar />
             <main className="content">
               <Topbar></Topbar>
+              <Dashboard />
             </main>
           </div>
         </ProSidebarProvider>
@@ -25,4 +27,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashboards;

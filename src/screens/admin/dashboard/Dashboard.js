@@ -1,20 +1,20 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 
-// import { mockTransactions } from "../../data/mockData";
+import { mockTransactions } from "../../../data/mockdata";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
-// import Header from "../../components/Header";
+import Header from "../../../components/Admin/Header/Header";
 // import LineChart from "../../components/LineChart";
 // import GeographyChart from "../../components/GeographyChart";
 // import BarChart from "../../components/BarChart";
 // import StatBox from "../../components/StatBox";
 // import ProgressCircle from "../../components/ProgressCircle";
-import { token } from "../../../thems";
+import { tokens } from "../../../thems";
 
-function Dashboard() {
+function Dashboard() {  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -54,7 +54,7 @@ function Dashboard() {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="12,361"
             subtitle="Emails Sent"
             progress="0.75"
@@ -64,7 +64,7 @@ function Dashboard() {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
         </Box>
         <Box
           gridColumn="span 3"
@@ -73,7 +73,7 @@ function Dashboard() {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="431,225"
             subtitle="Sales Obtained"
             progress="0.50"
@@ -83,7 +83,7 @@ function Dashboard() {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
         </Box>
         <Box
           gridColumn="span 3"
@@ -92,7 +92,7 @@ function Dashboard() {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="32,441"
             subtitle="New Clients"
             progress="0.30"
@@ -102,7 +102,7 @@ function Dashboard() {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
         </Box>
         <Box
           gridColumn="span 3"
@@ -111,7 +111,7 @@ function Dashboard() {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
+          {/* <StatBox
             title="1,325,134"
             subtitle="Traffic Received"
             progress="0.80"
@@ -121,7 +121,7 @@ function Dashboard() {
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
-          />
+          /> */}
         </Box>
 
         {/* ROW 2 */}
@@ -162,7 +162,7 @@ function Dashboard() {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            {/* <LineChart isDashboard={true} /> */}
           </Box>
         </Box>
         <Box
@@ -232,7 +232,7 @@ function Dashboard() {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
+            {/* <ProgressCircle size="125" /> */}
             <Typography
               variant="h5"
               color={colors.greenAccent[500]}
@@ -256,7 +256,7 @@ function Dashboard() {
             Sales Quantity
           </Typography>
           <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            {/* <BarChart isDashboard={true} /> */}
           </Box>
         </Box>
         <Box
@@ -273,7 +273,7 @@ function Dashboard() {
             Geography Based Traffic
           </Typography>
           <Box height="200px">
-            <GeographyChart isDashboard={true} />
+            {/* <GeographyChart isDashboard={true} /> */}
           </Box>
         </Box>
       </Box>

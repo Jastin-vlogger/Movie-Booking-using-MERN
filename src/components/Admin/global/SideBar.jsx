@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProSidebarProvider , Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { tokens } from "../../../thems";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -39,10 +39,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   
 
 function SideBar() {
+  const navigate = useNavigate()
     const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  const hello = ()=>{
+    console.log('hello')
+  }
   return (
     <Box
       sx={{
@@ -112,6 +117,7 @@ function SideBar() {
             <Item
               title="Theaters"
               to="/theaters"
+              onClick={()=>navigate('/admin/theaters')}
               icon={<TheaterComedyIcon />}
               selected={selected}
               setSelected={setSelected}
