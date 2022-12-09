@@ -1,12 +1,14 @@
 import React from "react";
 import { Button } from "../Buttton/Button";
-import './Hero.css'
-
+import "./Hero.css";
 
 function HeroSection() {
   return (
     <div className="hero-container">
-      <img src={require('../../../../../images/wallpapersden.com_avatar-hd-movie-2022_3499x1500.jpg')} alt="" />
+      <img
+        src={require("../../../../../images/wallpapersden.com_avatar-hd-movie-2022_3499x1500.jpg")}
+        alt=""
+      />
       <h1>ADVENTURE AWAITS</h1>
       <p>What are you waiting for?</p>
       <div className="hero-btns">
@@ -15,7 +17,7 @@ function HeroSection() {
           buttonStyle="btn--outline"
           buttonSize="btn--large"
         >
-          GET STARTED
+          BOOK NOW
         </Button>
         <Button
           className="btns"

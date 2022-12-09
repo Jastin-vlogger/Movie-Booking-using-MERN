@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import "./modal.css";
-import Modal from "@mui/material/Modal";
+import Modal from '@mui/material/Modal';
 import { Button } from "../../PublicDashboard/components/Buttton/Button";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "../../../../axios/axios";
+import { Experimental_CssVarsProvider } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -31,15 +32,14 @@ function Modals() {
     formState: { errors },
   } = useForm();
 
-  const handleCallbackResponse =(response)=>{
-    console.log('encoded jwt' + response.credential)
-  }
-
-
-
   const google = () => {
     window.open("http://localhost:3008/auth/google", "_self");
   };
+
+  const generateError = (error) =>
+    toast.error(error, {
+      position: "top-right",
+    });
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -47,9 +47,16 @@ function Modals() {
       console.log(response.data);
       if (response.data.status) {
         handleClose();
+        
         navigate("/");
+      } else {
+        generateError(errors);
       }
     });
+  };
+  console.log(errors);
+  const helo = () => {
+    console.log("hello");
   };
 
   const handleclosex = () => {
@@ -79,14 +86,12 @@ function Modals() {
                 <div className="field">
                   <label>Phone Number</label>
                   <input
-                    type="number"
-                    name="phone"
+                    type="tel"
                     placeholder="Phone number"
                     {...register("phone", {
                       required: true,
                       minLength: 10,
                       maxLength: 10,
-                      // valueAsNumber:[true,'helooooooo']
                     })}
                   />
                   <span className="text-danger">
@@ -101,17 +106,19 @@ function Modals() {
                     )}
                   </span>
                 </div>
-                <button className="fluid ui button red">Submit</button>
+                <button className="fluid ui button red" type="submit">
+                  Submit
+                </button>
               </div>
             </form>
             <hr></hr>
-            <div className="fluid ui button blue" onClick={google}> 
+            <div className="fluid ui button blue" onClick={google}>
               Google
             </div>
-            <ToastContainer></ToastContainer>
           </div>
         </Box>
       </Modal>
+      <ToastContainer />
     </div>
   );
 }

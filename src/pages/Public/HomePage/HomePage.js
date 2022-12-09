@@ -31,6 +31,8 @@ function HomePage() {
     };
     getUser();
   }, []);
+  
+
   return (
     <>
     <Navbar user={user}/>
