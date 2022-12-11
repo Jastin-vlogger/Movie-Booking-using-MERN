@@ -3,7 +3,7 @@ import "./addmovies.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@mui/icons-material";
-import { Button, Typography } from "@mui/material";
+import {  Typography } from "@mui/material";
 import { useState } from "react";
 import useMutation from "../../../../hooks/useMutation";
 import axios from "../../../../axios/axios";
@@ -18,6 +18,7 @@ const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
 const URL = "/api/admin/movieImage/upload";
 
 function AddMoviess() {
+  const navigate = useNavigate()
   const [error, setError] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -48,6 +49,7 @@ function AddMoviess() {
           },
         }).then(({data})=>{
           console.log(data)
+          navigate('/admin/movies')
         })
       })
       .catch((error) => {
@@ -55,22 +57,7 @@ function AddMoviess() {
       });
   };
 
-  // const handleUpload = async (e,id) => {
-  //   if (!isSubmit) return;
-  //   else {
-  //     console.log("heelo im onchagne");
-  //     const file = e.target.files[0];
-  //     console.log(file);
-  //     if (!validFileTypes.find((type) => type === file.type)) {
-  //       setError("File must be in JPG/PNG format");
-  //       return;
-  //     }
 
-  //     const form = new FormData();
-  //     form.append("image", file);
-  //     await uploadImage(form);
-  //   }
-  // };
 
   return (
     <>
@@ -97,16 +84,16 @@ function AddMoviess() {
                   })}
                 />
                 <span className="text-danger">
-                  {errors.name?.type === "required" && (
+                  {errors.title?.type === "required" && (
                     <span>name is required</span>
                   )}
-                  {errors.name?.type === "minLength" && (
+                  {errors.title?.type === "minLength" && (
                     <span>name must morethan or equal to 4 Character</span>
                   )}
-                  {errors.name?.type === "maxLength" && (
+                  {errors.title?.type === "maxLength" && (
                     <span>name must less than 20 Character</span>
                   )}
-                  {errors.name?.type === "pattern" && (
+                  {errors.title?.type === "pattern" && (
                     <span>Should not have spaces</span>
                   )}
                 </span>
@@ -125,16 +112,16 @@ function AddMoviess() {
                   })}
                 />
                 <span className="text-danger">
-                  {errors.address?.type === "required" && (
+                  {errors.description?.type === "required" && (
                     <span>address is required</span>
                   )}
-                  {errors.address?.type === "minLength" && (
+                  {errors.description?.type === "minLength" && (
                     <span>address must morethan or equal to 4 Character</span>
                   )}
-                  {errors.address?.type === "maxLength" && (
+                  {errors.description?.type === "maxLength" && (
                     <span>address must less than 50 Character</span>
                   )}
-                  {errors.address?.type === "pattern" && (
+                  {errors.description?.type === "pattern" && (
                     <span>Should not have spaces</span>
                   )}
                 </span>
@@ -155,16 +142,16 @@ function AddMoviess() {
                   })}
                 />
                 <span className="text-danger">
-                  {errors.city?.type === "required" && (
+                  {errors.Genre?.type === "required" && (
                     <span>city is required</span>
                   )}
-                  {errors.city?.type === "minLength" && (
+                  {errors.Genre?.type === "minLength" && (
                     <span>city must morethan or equal to 4 Character</span>
                   )}
-                  {errors.city?.type === "maxLength" && (
+                  {errors.Genre?.type === "maxLength" && (
                     <span>city must less than 20 Character</span>
                   )}
-                  {errors.city?.type === "pattern" && (
+                  {errors.Genre?.type === "pattern" && (
                     <span>Should not have spaces</span>
                   )}
                 </span>
@@ -183,16 +170,16 @@ function AddMoviess() {
                   })}
                 />
                 <span className="text-danger">
-                  {errors.state?.type === "required" && (
+                  {errors.director?.type === "required" && (
                     <span>state is required</span>
                   )}
-                  {errors.state?.type === "minLength" && (
+                  {errors.director?.type === "minLength" && (
                     <span>state must morethan or equal to 4 Character</span>
                   )}
-                  {errors.state?.type === "maxLength" && (
+                  {errors.director?.type === "maxLength" && (
                     <span>state must less than 20 Character</span>
                   )}
-                  {errors.state?.type === "pattern" && (
+                  {errors.director?.type === "pattern" && (
                     <span>Should not have spaces</span>
                   )}
                 </span>
@@ -210,7 +197,7 @@ function AddMoviess() {
                   })}
                 />
                 <p className="text-danger">
-                  {errors.email?.type === "required" && (
+                  {errors.Duration?.type === "required" && (
                     <span>Duration is required</span>
                   )}
                 </p>
@@ -223,21 +210,14 @@ function AddMoviess() {
                   placeholder="Start date"
                   {...register("startDate", {
                     required: true,
-                    minLength: 10,
-                    maxLength: 10,
                     // valueAsNumber:[true,'helooooooo']
                   })}
                 />
                 <span className="text-danger">
-                  {errors.phone?.type === "required" && (
-                    <span>Phone Number is required</span>
+                  {errors.startDate?.type === "required" && (
+                    <span>Date Number is required</span>
                   )}
-                  {errors.phone?.type === "minLength" && (
-                    <span>Phone Number must have 10 digits</span>
-                  )}
-                  {errors.phone?.type === "maxLength" && (
-                    <span>Phone Number must have 10 digits</span>
-                  )}
+                  
                 </span>
               </div>
             </div>
@@ -282,17 +262,17 @@ function AddMoviess() {
                   })}
                 />
                 <span className="text-danger">
-                  {errors.address?.type === "required" && (
-                    <span>address is required</span>
+                  {errors.YoutubeLink?.type === "required" && (
+                    <span>Youtube Link is required</span>
                   )}
-                  {errors.address?.type === "minLength" && (
-                    <span>address must morethan or equal to 4 Character</span>
+                  {errors.YoutubeLink?.type === "minLength" && (
+                    <span>Youtube Link must morethan or equal to 4 Character</span>
                   )}
-                  {errors.address?.type === "maxLength" && (
-                    <span>address must less than 50 Character</span>
+                  {errors.YoutubeLink?.type === "maxLength" && (
+                    <span>Youtube Link must less than 50 Character</span>
                   )}
-                  {errors.address?.type === "pattern" && (
-                    <span>Should not have spaces</span>
+                  {errors.YoutubeLink?.type === "pattern" && (
+                    <span>Youtube Link not have spaces</span>
                   )}
                 </span>
               </div>

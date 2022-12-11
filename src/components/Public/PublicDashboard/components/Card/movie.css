@@ -1,0 +1,71 @@
+.section{
+    color: white;
+    width: 100%;
+    height: auto;
+    /* padding: 0 148px; */
+    /* margin-top: 3rem; */
+   /* position:absolute; */
+   margin-bottom: 50px;
+}
+.section .card{
+    padding: 15px;
+    /* display: flex !important; */
+}
+
+@media only screen and (max-width: 840px) {
+    .section{
+        padding: 0 14px;
+    }
+  }
+@media only screen and (max-width: 480px) {
+    .section{
+        padding:10px;
+    }
+    .section .card{
+        padding: 20px;
+        /* display: flex !important; */
+    }
+  }
+@media only screen and (max-width: 400px) {
+    .section{
+        padding: 0 14px;
+    }
+ 
+  }
+
+  .head{
+    font-size: 2rem;
+    margin-left: 15px;
+    margin-bottom: 2rem;
+    /* margin-top: 2rem; */
+  }
+
+
+
+  .cardContent{
+    padding-top: 1rem;
+    line-height: 1rem;
+
+  }
+  
+  .cardContent .title{
+    color: white;
+    font-size: 16px;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+  .description{
+    color: gray;
+    font-size: 12px;
+  }
+
+    /* .slick-slide {
+        margin-right: 20px;
+        height: fit-content;
+        width: 100%;
+    } */
+  
+
+/* .slick-track{
+    width: 3000px !important;
+} */

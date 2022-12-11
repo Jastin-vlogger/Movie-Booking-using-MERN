@@ -2,7 +2,7 @@ import axios from '../../../axios/axios'
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../../components/Public/Navbar/Navbar'
 import HeroSection from '../../../components/Public/PublicDashboard/components/Banner/HeroSection'
-import Cards from '../../../components/Public/PublicDashboard/components/Card/Cards'
+import Cards from '../../../components/Public/PublicDashboard/components/Cards/Cards'
 
 
 function HomePage() {
