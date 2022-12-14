@@ -1,24 +1,4 @@
-.slick-arrow.slick-prev,
-.slick-arrow.slick-next{
-background : rgb(255, 255, 255);
-width: 47px;
-height: 104px;
-display: flex;
-align-items: center;
-justify-content : center;
-z-index: 1;
-}
 
-.slick-prev{
-  left: 0px !important;
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
-}
-.slick-next{
-  right: 0px !important;
-  border-top-left-radius: 7px;
-  border-bottom-left-radius: 7px;
-}
 
 .slick-prev::before,.slick-next::before{
   display: none;

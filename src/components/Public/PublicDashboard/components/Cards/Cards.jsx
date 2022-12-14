@@ -58,14 +58,14 @@ function Cards() {
       {
         breakpoint: 769,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           centerMode: false,
         },
       },
       {
         breakpoint: 1025,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           centerMode: false,
           slidesToScroll: 2,
         },
@@ -98,15 +98,18 @@ function Cards() {
   if (width <= 426) {
     slidesToShow = 1;
   } else if (width > 426 && width <= 769) {
-    slidesToShow = 3;
+    slidesToShow = 2;
   } else if (width > 769 && width <= 1025) {
+    slidesToShow = 3;
+  } else if (width > 1025 && width <= 1300) {
     slidesToShow = 4;
-  } else {
+  }else {
     slidesToShow = 5;
+
   }
 
   return (
-    <div style={{ margin: '30px' }} className='carousel'>
+    <div style={{ margin: '50px' }} className='carousel'>
     <Slider {...carouselProperties}>
       {data.map((movie) => (
         <MovieCard movie={movie} />

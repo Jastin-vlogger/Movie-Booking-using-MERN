@@ -1,7 +1,8 @@
-
+import { Box, Card, CardMedia, Typography } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import { styled } from "@mui/material/styles";
-import "./movie.css";
+// import "./movie.css";
+import { useNavigate } from "react-router-dom";
 
 const CardInfo = styled(CardContent)(({ theme }) => ({
   "&:last-child": {
@@ -9,27 +10,36 @@ const CardInfo = styled(CardContent)(({ theme }) => ({
   },
 }));
 
+
+
 const MovieCard = ({ movie }) => {
+  const navigate = useNavigate()
+
+  const openMoviePage = (movie)=>{
+    console.log(movie)
+    navigate('/moviepage')
+  }
   return (
-    // <Card sx={{ maxWidth: 250}}>
-    //     <Box s>
-    //         <CardMedia
-    //             component="img"
-    //             height="300"
-    //             image={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
-    //             alt={movie.title}/>
-    //     </Box>
+    <Card sx={{ maxWidth: 250 }} onClick={()=>openMoviePage(movie)} style={{cursor:"pointer"}}>
+      <Box s>
+        <CardMedia
+          component="img"
+          height="300"
+          image={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
+          alt={movie.title}
+        />
+      </Box>
 
-    //     <CardInfo>
-    //         <Typography variant="h6" gutterBottom component="div">
-    //             {movie.title}
-    //         </Typography>
+      <CardInfo style={{ textAlign: "center" }}>
+        <Typography variant="h6" gutterBottom component="div" >
+          {movie.title}
+        </Typography>
 
-    //         <Typography mb={0} variant="subtitle1" gutterBottom component="div">
-    //             {movie.startDate}
-    //         </Typography>
-    //     </CardInfo>
-    // </Card>
+        <Typography mb={0} variant="subtitle1" gutterBottom component="div">
+          {movie.Genre}
+        </Typography>
+      </CardInfo>
+    </Card>
 
     // <div className="section">
 
@@ -44,24 +54,24 @@ const MovieCard = ({ movie }) => {
     //     </div>
     //   </div>
     // </div>
-    <div style={{ textAlign: "center" }}>
-      <img
-        className="multi__image"
-        src={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
-        alt=""
-        style={{
-          width: "100%",
-          height: "170px",
-          objectFit: "contain",
-          marginBottom: "10px",
-        }}
-      />
-      <p style={{ fontSize: "20px", padding: "5px 0" }}>{movie.title}</p>
-      <p style={{ fontSize: "16px", padding: "5px 0", color: "green" }}>
-        {movie.Genre}
-      </p>
-  
-    </div>
+    // <div style={{ textAlign: "center" }}>
+    //   <img
+    //     className="multi__image"
+    //     src={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
+    //     alt=""
+    //     style={{
+    //       width: "100%",
+    //       height: "170px",
+    //       objectFit: "contain",
+    //       marginBottom: "10px",
+    //     }}
+    //   />
+    //   <p style={{ fontSize: "20px", padding: "5px 0" }}>{movie.title}</p>
+    //   <p style={{ fontSize: "16px", padding: "5px 0", color: "green" }}>
+    //     {movie.Genre}
+    //   </p>
+
+    // </div>
   );
 };
 

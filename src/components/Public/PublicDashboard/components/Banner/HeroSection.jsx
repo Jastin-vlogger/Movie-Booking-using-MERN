@@ -75,7 +75,7 @@ function HeroSection() {
         />
         <Carousel.Caption>
           <Button>BOOK NOW</Button>
-          <Button buttonStyle="btn--outline">WATCH TRAILOR</Button>
+       
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
