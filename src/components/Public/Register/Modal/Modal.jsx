@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import "./modal.css";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 import { Button } from "../../PublicDashboard/components/Buttton/Button";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "../../../../axios/axios";
-import { Experimental_CssVarsProvider } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { registration } from "../../../../action/userAction";
+import { useEffect } from "react";
+import { USER_LOGIN_REQUEST } from "../../../../constants/userConstats";
+import Loading from "../../../Loading/Loading";
 
 const style = {
   position: "absolute",
@@ -26,6 +30,20 @@ function Modals() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const userinfo = useSelector((state) => state.userLogin);
+  const { loading, userInfo, error } = userinfo;
+  console.log(userInfo ,"njannnn userinfo",loading)
+
+  useEffect(()=>{
+    if(userInfo){
+      console.log('im here')
+      handleClose();
+      navigate('/')
+    }
+  },[navigate, userInfo])
+
   const {
     register,
     handleSubmit,
@@ -43,20 +61,18 @@ function Modals() {
 
   const onSubmit = async (data) => {
     console.log(data);
-    axios.post("/api/users/signup", data).then((response) => {
-      console.log(response.data);
-      if (response.data.status) {
-        handleClose();
-        
-        navigate("/");
-      } else {
-        generateError(errors);
-      }
-    });
-  };
-  console.log(errors);
-  const helo = () => {
-    console.log("hello");
+    // dispatch({type:USER_LOGIN_REQUEST,payload:data});
+    dispatch(registration(data));
+    // axios.post("/api/users/signup", data).then((response) => {
+    //   console.log(response.data);
+    //   if (response.data.status) {
+    //     handleClose();
+
+    //     navigate("/");
+    //   } else {
+    //     generateError(errors);
+    //   }
+    // });
   };
 
   const handleclosex = () => {
@@ -68,6 +84,7 @@ function Modals() {
       <Button buttonStyle="btn--outline" onClick={handleOpen}>
         Sign Up
       </Button>
+      {loading && <Loading />}
       <Modal
         open={open}
         onClose={handleClose}

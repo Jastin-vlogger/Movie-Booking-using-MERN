@@ -2,38 +2,16 @@ import React from "react";
 import "./addmovies.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@mui/icons-material";
-import {  Typography } from "@mui/material";
-import { useState } from "react";
-import useMutation from "../../../../hooks/useMutation";
 import axios from "../../../../axios/axios";
-
-const ErrorText = ({ children, ...props }) => (
-  <Typography sx={{ color: "error.main" }} {...props}>
-    {children}
-  </Typography>
-);
-
-const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
-const URL = "/api/admin/movieImage/upload";
 
 function AddMoviess() {
   const navigate = useNavigate()
-  const [error, setError] = useState("");
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  const {
-    mutate: uploadImage,
-    isLoading: uploading,
-    error: uploadError,
-  } = useMutation({ url: URL });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+console.log(errors)
   const onSubmit = async (data) => {
     console.log(data);
     const formData = new FormData();
@@ -245,8 +223,7 @@ function AddMoviess() {
                 >
                   Upload
                 </Button> */}
-                {error && <ErrorText>{error}</ErrorText>}
-                {uploadError && <ErrorText>{uploadError}</ErrorText>}
+               
               </div>
               <div className="col-md-6 mt-md-0 mt-3">
                 <label>youtube link</label>
