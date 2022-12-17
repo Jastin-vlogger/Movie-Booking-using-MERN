@@ -4,15 +4,15 @@ import "./cards.css";
 import "./card-theme.css";
 import MovieCard from "../Card/MovieCard";
 import { useEffect } from "react";
-import axios from "../../../../../axios/axios";
 import { useState } from "react";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getMovies } from "../../../../../action/movieAction";
+import Loading from "../../../../Loading/Loading";
 
 let slidesToShow = 5;
 const PreviousBtn = (props) => {
-  console.log(props);
   const { className, onClick, currentSlide } = props;
   return (
     <>
@@ -26,7 +26,6 @@ const PreviousBtn = (props) => {
 };
 const NextBtn = (props) => {
   const { className, onClick, slideCount, currentSlide } = props;
-  console.log(props);
   return (
     <>
       {currentSlide !== slideCount - slidesToShow && (
@@ -39,7 +38,6 @@ const NextBtn = (props) => {
 };
 
 function Cards() {
-  const [data, setData] = useState([]);
   const carouselProperties = {
     prevArrow: <PreviousBtn />,
     nextArrow: <NextBtn />,
@@ -73,16 +71,12 @@ function Cards() {
     ],
   };
 
+  const movies = useSelector((state) => state.getMovies);
+  const dispatch = useDispatch();
+  const { loading, movieInfo, error } = movies;
+
   useEffect(() => {
-    axios
-      .get("/api/users/movieInfo")
-      .then(({ data }) => {
-        console.log(data);
-        setData(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(getMovies());
   }, []);
 
   const [width, setWidth] = useState(window.innerWidth);
@@ -103,18 +97,22 @@ function Cards() {
     slidesToShow = 3;
   } else if (width > 1025 && width <= 1300) {
     slidesToShow = 4;
-  }else {
+  } else {
     slidesToShow = 5;
-
   }
 
   return (
-    <div style={{ margin: '50px' }} className='carousel'>
-    <Slider {...carouselProperties}>
-      {data.map((movie) => (
-        <MovieCard movie={movie} />
-      ))}
-    </Slider>
+    <div style={{ margin: "50px" }} className="carousel">
+      {loading && <Loading />}
+      {error ? (
+        <h4>{error}</h4>
+      ) : (
+        <Slider {...carouselProperties}>
+          {movieInfo?.map((movie) => (
+            <MovieCard movie={movie} />
+          ))}
+        </Slider>
+      )}
     </div>
   );
 }

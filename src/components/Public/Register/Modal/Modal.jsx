@@ -10,7 +10,6 @@ import axios from "../../../../axios/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { registration } from "../../../../action/userAction";
 import { useEffect } from "react";
-import { USER_LOGIN_REQUEST } from "../../../../constants/userConstats";
 import Loading from "../../../Loading/Loading";
 
 const style = {

@@ -1,11 +1,6 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 
-import { mockTransactions } from "../../../data/mockdata";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../../components/Admin/Header/Header";
 // import LineChart from "../../components/LineChart";
 // import GeographyChart from "../../components/GeographyChart";
@@ -183,9 +178,9 @@ function Dashboard() {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          
             <Box
-              key={`${transaction.txId}-${i}`}
+              // key={`${transaction.txId}-${i}`}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -198,22 +193,22 @@ function Dashboard() {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {/* {transaction.txId} */}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {/* {transaction.user} */}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              {/* <Box color={colors.grey[100]}>{transaction.date}</Box> */}
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                {/* ${transaction.cost} */}
               </Box>
             </Box>
-          ))}
+        
         </Box>
 
         {/* ROW 3 */}

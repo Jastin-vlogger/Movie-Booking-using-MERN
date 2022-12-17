@@ -4,8 +4,6 @@ import {
   Box, Button, IconButton, Typography, useTheme,
 } from '@mui/material';
 
-import { mockTransactions } from '../../../data/mockdata';
-
 import Header from '../../../components/Admin/Header/Header';
 
 import { tokens } from '../../../thems';
@@ -178,10 +176,10 @@ function Dashboard() {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          
             <Box
               // eslint-disable-next-line react/no-array-index-key
-              key={`${transaction.txId}-${i}`}
+              // key={`${transaction.txId}-${i}`}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -194,23 +192,23 @@ function Dashboard() {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {/* {transaction.txId} */}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {/* {transaction.user} */}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              {/* <Box color={colors.grey[100]}>{transaction.date}</Box> */}
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
                 $
-                {transaction.cost}
+                {/* {transaction.cost} */}
               </Box>
             </Box>
-          ))}
+         
         </Box>
 
         {/* ROW 3 */}

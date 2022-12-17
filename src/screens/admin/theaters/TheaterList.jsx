@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import axios from "../../../axios/axios";
 import { useState } from "react";
 
-function Movies() {
+function TheaterList() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
@@ -74,19 +74,6 @@ function Movies() {
     //   },
     // },
   ];
-
-  useEffect(() => {
-    axios
-      .get("/api/users/movieInfo")
-      .then(({ data }) => {
-        console.log(data);
-        setData(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <Box m="20px">
       <Button
@@ -141,4 +128,4 @@ function Movies() {
   );
 }
 
-export default Movies;
+export default TheaterList;
