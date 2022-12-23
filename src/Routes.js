@@ -7,6 +7,9 @@ import HomePage from "./pages/Public/HomePage/HomePage";
 import Registration from "./pages/theater/Registration";
 import Moviepage from "./pages/Public/moviepage/Moviepage";
 import LoginTheater from "./pages/theater/LoginTheater";
+import Theater from "./pages/Admin/Theater";
+import TheaterHome from "./pages/theater/TheaterHome";
+import AddScre from "./pages/theater/AddScre";
 
 function Routess() {
   return (
@@ -17,12 +20,16 @@ function Routess() {
       {/* admin routes */}
       <Route exact path="/admin" element={<Dashboards />} />
       <Route exact path="/admin/movies" element={<Movie />} />
+      <Route exact path="/admin/theaters" element={<Theater />} />
       <Route exact path="/admin/movies/addMovies" element={<AddMovies />} />
       <Route exact path="/admin/login" element={<Login />} />
 
     
       <Route exact path="/theater/register" element={<Registration />} />
       <Route exact path="/theater/login" element={<LoginTheater />} />
+      <Route exact path="/theater" element={<TheaterHome />} />
+      <Route exact path="/theater/addScreen" element={<AddScre />} />
+      <Route exact path="/theater/screens" element={<AddScre />} />
      
     </Routes>
   );

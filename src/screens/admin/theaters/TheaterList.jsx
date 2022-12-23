@@ -1,91 +1,114 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../thems";
 import Header from "../../../components/Admin/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "../../../axios/axios";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { approveTheaters, fetchTheaters } from "../../../action/theaterAction";
+import Loading from "../../../components/Loading/Loading";
 
 function TheaterList() {
   const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const getTheatersList = useSelector((state) => state.getTheaters);
+  const { loading, getTheaters, error } = getTheatersList;
+  const getTheaterApproveStatus = useSelector((state) => state.approveTheater);
+  const { approvetheaters } = getTheaterApproveStatus;
+
+  console.log(getTheaters);
+
+  useEffect(() => {
+    dispatch(fetchTheaters());
+  }, [approvetheaters, dispatch]);
+
+  const approveTheater = (status) => {
+    dispatch(approveTheaters(status));
+  };
+
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     { field: "_id", headerName: "ID" },
     {
-      field: "title",
-      headerName: "Title",
+      field: "name",
+      headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "Genre",
-      headerName: "Genre",
+      field: "theater",
+      headerName: "theater",
       type: "text",
       headerAlign: "left",
       align: "left",
     },
     {
-      field: "Duration",
-      headerName: "Duration",
+      field: "email",
+      headerName: "Email",
       flex: 1,
     },
     {
-      field: "startDate",
-      headerName: "startDate",
+      field: "isApproved",
+      headerName: "Action",
       flex: 1,
+      renderCell: (params) => {
+        return (
+          <Box
+            width="60%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={
+              params.row.isApproved === false
+                ? colors.greenAccent[700]
+                : []
+            }
+            borderRadius="4px"
+          >
+            {params.row.isApproved === false && (
+              <div
+              style = {{cursor:"pointer"}}
+                className="viewButton"
+                onClick={() =>
+                  approveTheater({ status: "approve", id: params.id })
+                }
+              >
+                Approve
+              </div>
+            )}
+          </Box>
+        );
+      },
+    },
+  ];
+  const columnsApproved = [
+    { field: "_id", headerName: "ID" },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
     },
     {
-      field: "director",
-      headerName: "Director",
+      field: "theater",
+      headerName: "theater",
+      type: "text",
+      headerAlign: "left",
+      align: "left",
+    },
+    {
+      field: "email",
+      headerName: "Email",
       flex: 1,
     },
-    // {
-    //   field: "director",
-    //   headerName: "Director",
-    //   flex: 1,
-    //   renderCell: ({ row: { access } }) => {
-    //     return (
-    //       <Box
-    //         width="60%"
-    //         m="0 auto"
-    //         p="5px"
-    //         display="flex"
-    //         justifyContent="center"
-    //         backgroundColor={
-    //           access === "admin"
-    //             ? colors.greenAccent[600]
-    //             : access === "manager"
-    //             ? colors.greenAccent[700]
-    //             : colors.greenAccent[700]
-    //         }
-    //         borderRadius="4px"
-    //       >
-    //         {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-    //         {access === "manager" && <SecurityOutlinedIcon />}
-    //         {access === "user" && <LockOpenOutlinedIcon />}
-    //         <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-    //           {access}
-    //         </Typography>
-    //       </Box>
-    //     );
-    //   },
-    // },
   ];
   return (
     <Box m="20px">
-      <Button
-        variant="contained"
-        style={{ float: "right" }}
-        onClick={() => {
-          navigate("/admin/movies/addMovies");
-        }}
-      >
-        Add Movies
-      </Button>
-      <Header title="Movies" subtitle="Manage Movies" />
+      <Header title="Theaters" subtitle="Manage Theaters" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -115,9 +138,10 @@ function TheaterList() {
           },
         }}
       >
+        {loading && <Loading />}
         <DataGrid
           checkboxSelection
-          rows={data}
+          rows={getTheaters}
           columns={columns}
           pageSize={9}
           rowsPerPageOptions={[9]}

@@ -129,7 +129,7 @@ function Logins() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/theater/reg" variant="body2">
+                  <Link href="/theater/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

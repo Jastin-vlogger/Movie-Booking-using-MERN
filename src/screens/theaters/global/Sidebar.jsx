@@ -38,7 +38,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-function SideBar() {
+function Sidebar() {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -83,7 +83,7 @@ function SideBar() {
               ml="15px"
             >
               <Typography variant="h3" color={colors.grey[100]}>
-                ADMIN
+                Theater
               </Typography>
               <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                 <MenuOutlinedIcon />
@@ -95,7 +95,7 @@ function SideBar() {
         <Box paddingRight={isCollapsed ? undefined : "0%"}>
           <Item
             title="Dashboard"
-            to="/admin"
+            to="/theater"
             icon={<HomeOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
@@ -109,15 +109,15 @@ function SideBar() {
             Pages
           </Typography>
           <Item
-            title="Movies"
-            to="/admin/movies"
+            title="Shos"
+            to="/theater/shows"
             icon={<TheaterComedyIcon />}
             selected={selected}
             setSelected={setSelected}
           />
           <Item
-            title="Theaters"
-            to="/admin/theaters"
+            title="Screen"
+            to="/theater/screens"
             icon={<LocalMoviesIcon />}
             selected={selected}
             setSelected={setSelected}
@@ -139,7 +139,7 @@ function SideBar() {
           </Typography>
           <Item
             title="Users"
-            to="/form"
+            to="/addstaff"
             icon={<PersonOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
@@ -200,4 +200,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default Sidebar;

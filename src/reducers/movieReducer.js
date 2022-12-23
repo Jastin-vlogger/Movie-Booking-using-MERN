@@ -3,10 +3,10 @@ import {
   GET_MOVIE_SUCCESS,
   GET_MOVIE_FAIL,
 } from "../constants/movieConstants";
-export const getMoviesReducer = (state = { movies: [] }, action) => {
+export const getMoviesReducer = (state = { movieInfo: [] }, action) => {
   switch (action.type) {
     case GET_MOVIE_REQUEST:
-      return { loading: true, movies: [] };
+      return { loading: true, movieInfo: [] };
     case GET_MOVIE_SUCCESS:
       return { loading: false, movieInfo: action.payload };
     case GET_MOVIE_FAIL:
