@@ -32,7 +32,7 @@ function HeroSection() {
             <div className="bannerImage" style={{width:'100%',height:'500px'}}>
               <img
                 className="d-block w-100 "
-                src={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
+                src={`http://localhost:3008/movies/${movie._id}.jpg`}
                 alt="First slide"
               />
             </div>

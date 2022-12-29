@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware} from 'redux'
 import {userLoginReducer} from './reducers/userReducer'
 import {getMoviesReducer} from './reducers/movieReducer'
-import {approveTheater, fetchTheater, theaterLogin ,theaterScreenAdd} from './reducers/theaterReducer'
+import {approveTheater, fetchTheater, theaterLogin ,theaterScreenAdd,screenList} from './reducers/theaterReducer'
 import thunk from 'redux-thunk'
 
 
@@ -11,7 +11,8 @@ const reducer = combineReducers({
     theaterLogin,
     getTheaters:fetchTheater,
     approveTheater,
-    theaterScreenAdd
+    theaterScreenAdd,
+    screenList,
 })
 
 const middleware = [thunk]

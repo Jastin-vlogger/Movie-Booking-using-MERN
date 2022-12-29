@@ -10,6 +10,8 @@ import LoginTheater from "./pages/theater/LoginTheater";
 import Theater from "./pages/Admin/Theater";
 import TheaterHome from "./pages/theater/TheaterHome";
 import AddScre from "./pages/theater/AddScre";
+import Screen from "./pages/theater/Screen";
+import AddShow from "./pages/theater/AddShow";
 
 function Routess() {
   return (
@@ -29,7 +31,8 @@ function Routess() {
       <Route exact path="/theater/login" element={<LoginTheater />} />
       <Route exact path="/theater" element={<TheaterHome />} />
       <Route exact path="/theater/addScreen" element={<AddScre />} />
-      <Route exact path="/theater/screens" element={<AddScre />} />
+      <Route exact path="/theater/screens" element={<Screen />} />
+      <Route exact path="/theater/addShows" element={<AddShow />} />
      
     </Routes>
   );

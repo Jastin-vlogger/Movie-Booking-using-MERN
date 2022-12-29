@@ -25,7 +25,7 @@ const MovieCard = ({ movie }) => {
         <CardMedia
           component="img"
           height="300"
-          image={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`}
+          image={`http://localhost:3008/movies/${movie._id}.jpg`}
           alt={movie.title}
         />
       </Box>

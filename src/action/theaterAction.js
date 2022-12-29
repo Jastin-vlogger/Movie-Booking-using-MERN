@@ -10,7 +10,10 @@ import {
   THEATER_APPROVE_FAIL,
   THEATER_SCREENADD_REQUEST,
   THEATER_SCREENADD_SUCESS,
-  THEATER_SCREENADD_FAIL
+  THEATER_SCREENADD_FAIL,
+  GET_SCREEN_LIST_FAIL,
+  GET_SCREEN_LIST_SUCCESSS,
+  GET_SCREEN_LIST_REQUEST
 } from "../constants/theaterConstant";
 import axios from "../axios/axios";
 
@@ -73,6 +76,23 @@ export const addTheaterScreen = (screenInfo) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: THEATER_SCREENADD_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+export const getScreenList = (id) => async (dispatch) => {
+  try {
+    console.log(id)
+    dispatch({ type: GET_SCREEN_LIST_REQUEST });
+    const { data } = await axios.get(`/api/theater/getScreen/${id}`);
+    console.log(data);
+    dispatch({ type: GET_SCREEN_LIST_SUCCESSS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_SCREEN_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
