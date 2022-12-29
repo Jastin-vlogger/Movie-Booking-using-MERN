@@ -1,8 +1,10 @@
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
 // import "./movie.css";
 import { useNavigate } from "react-router-dom";
+import { movieInfo } from "../../../../../action/movieAction";
 
 const CardInfo = styled(CardContent)(({ theme }) => ({
   "&:last-child": {
@@ -14,9 +16,11 @@ const CardInfo = styled(CardContent)(({ theme }) => ({
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const openMoviePage = (movie)=>{
     console.log(movie)
+    dispatch(movieInfo(movie))
     navigate('/moviepage')
   }
   return (
@@ -42,7 +46,6 @@ const MovieCard = ({ movie }) => {
     </Card>
 
     // <div className="section">
-
     //   <div className="card">
     //     <div className="cardImage" style={{width:'100%' , height:"10px"}}>
     //       <img src={`https://react-movie-image-upload.s3.ap-northeast-1.amazonaws.com/${movie._id}.jpg`} alt="logos" />
