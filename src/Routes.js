@@ -12,12 +12,14 @@ import TheaterHome from "./pages/theater/TheaterHome";
 import AddScre from "./pages/theater/AddScre";
 import Screen from "./pages/theater/Screen";
 import AddShow from "./pages/theater/AddShow";
+import TrailerPage from "./pages/Public/TrailerPage";
 
 function Routess() {
   return (
     <Routes>
       <Route exact path="/" element={<HomePage />} />
       <Route exact path="/moviepage" element={<Moviepage />} />
+      <Route exact path="/moviepage/trailer" element={<TrailerPage />} />
 
       {/* admin routes */}
       <Route exact path="/admin" element={<Dashboards />} />

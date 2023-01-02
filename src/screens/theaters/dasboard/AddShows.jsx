@@ -24,7 +24,6 @@ function AddShows() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [cookies] = useCookies([]);
-  const [movie, setmovie] = useState([]);
   const [name, setname] = useState();
   const [price, setprice] = useState();
   const [status, setstatus] = useState();
@@ -32,6 +31,7 @@ function AddShows() {
   const [sname, setsname] = useState();
   const [time, setTime] = useState();
   console.log(screen);
+  
   const token = cookies.TheaterToken;
   const decoded = jwt_decode(token);
   const id = decoded.id;
@@ -45,6 +45,7 @@ function AddShows() {
     setstatus(event.target.value);
   };
   const handleScreen = (event) => {
+    console.log(event.target.value);
     setsname(event.target.value);
   };
   const handleTime = (event) => {
@@ -144,13 +145,18 @@ function AddShows() {
                     value={name}
                     onChange={handleTime}
                   >
-                    {["10:00 am", "12:00 pm", "02:15 pm", "03:50 pm", " 06:00 pm", "09:00pm"].map(
-                    (time) => (
+                    {[
+                      "10:00 am",
+                      "12:00 pm",
+                      "02:15 pm",
+                      "03:50 pm",
+                      " 06:00 pm",
+                      "09:00pm",
+                    ].map((time) => (
                       <MenuItem key={`time-${time}`} value={time}>
                         {time}
                       </MenuItem>
-                    )
-                  )}
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -186,7 +192,7 @@ function AddShows() {
                   </span>
                 </div>
               </Grid>
-              
+
               <Grid item xs={12} lg={6}>
                 <FormControl variant="filled" color="secondary" fullWidth>
                   <InputLabel id="demo-simple-select-filled-label">
@@ -208,27 +214,49 @@ function AddShows() {
                 </FormControl>
               </Grid>
               <Grid item xs={12} lg={6}>
-                <FormControl variant="filled" color="secondary" fullWidth>
+                {/* <FormControl variant="filled" color="secondary" fullWidth>
                   <InputLabel id="demo-simple-select-filled-label">
                     Screen
                   </InputLabel>
                   <Select
-                    labelId="Screen"
+                    labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    value={sname}
+                    value={name}
                     onChange={handleScreen}
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-
-                    {screen.map((data) => (
-                      <MenuItem value={data.screenName}>
-                        {data.screenName}
+                    {screen.map(
+                    (time) => (
+                      <MenuItem key={`time-${time}`} value={time}>
+                        {time.ScreenName}
                       </MenuItem>
-                    ))}
+                    )
+                  )}
                   </Select>
-                </FormControl>
+                </FormControl> */}
+                <Grid item xs={12} lg={6}>
+                  <FormControl variant="filled" color="secondary" fullWidth>
+                    <InputLabel id="demo-simple-select-filled-label">
+                      Screen Name
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      value={name}
+                      onChange={handleScreen}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {screen?.map((moviename) => {
+                        console.log(moviename)
+                       return <MenuItem value={moviename.screenName}>
+                          {moviename.screenName}
+                        </MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                
               </Grid>
               <Grid item xs={12} lg={6}>
                 <FormControl variant="filled" color="secondary" fullWidth>
@@ -261,14 +289,6 @@ function AddShows() {
             >
               Submit
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item></Grid>
-            </Grid>
           </Box>
         </form>
         <ToastContainer />

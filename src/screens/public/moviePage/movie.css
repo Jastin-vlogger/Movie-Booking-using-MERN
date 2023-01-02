@@ -921,7 +921,6 @@
   
   .download-btn {
     max-width: max-content;
-    background: var(--citrine);
     color: var(--rich-black-fogra-29);
     font-size: var(--fs-11);
     font-weight: var(--fw-500);
@@ -929,12 +928,11 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 20px 35px;
+    padding: 20px 75px;
     letter-spacing: 5px;
     border-radius: 6px;
   }
   
-  .download-btn ion-icon { font-size: 16px; }
   
   
   
@@ -1459,16 +1457,14 @@
   
     .download-btn {
       left: auto;
-      right: 15px;
+      right: -95px;
       bottom: 0;
-      transform: rotate(0.25turn) translateY(100%);
       transform-origin: bottom right;
       padding: 40px 50px;
     }
   
     .download-btn ion-icon {
       font-size: 30px;
-      transform: rotate(-0.25turn);
     }
   
   }

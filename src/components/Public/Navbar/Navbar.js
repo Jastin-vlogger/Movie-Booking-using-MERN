@@ -4,11 +4,18 @@ import { Link } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import Modal from "../Register/Modal/Modal";
 import "./Navbar.css";
+import { useSelector } from "react-redux";
+import { NavDropdown } from "react-bootstrap";
+import { Button } from "../PublicDashboard/components/Buttton/Button";
 
 function Navbar({ user }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  console.log(userInfo);
 
   const logout = () => {
     window.open("http://localhost:3008/auth/logout", "_self");
@@ -62,32 +69,30 @@ function Navbar({ user }) {
               </Link>
             </li>
 
-            {user ? (
-              <li className="nav-item">
-                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success">
-                      {user.displayName}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Link>
-              </li>
-            ) : (
-              <li  className="nav-item">
-                {button && (
+            <li className="nav-item">
+              {userInfo?.phone ? (
+                <li className="nav-links">
+                  <Button >
+                    hello guest
+                    {/* <NavDropdown title={userInfo.name} >
+                    <Link to="/profile">
+                      <NavDropdown.Item>Profile</NavDropdown.Item>
+                    </Link>
+                    <NavDropdown.Item>Logout</NavDropdown.Item>
+                  </NavDropdown> */}
+                  </Button>
+                </li>
+              ) : (
+                <>
                   <li className="nav-links">
                     <Modal
                       open={openModal}
                       onClose={() => setOpenModal(false)}
                     />
                   </li>
-                )}
-              </li>
-            )}
+                </>
+              )}
+            </li>
           </ul>
         </div>
       </div>

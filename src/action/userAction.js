@@ -12,6 +12,7 @@ export const registration = (datas) => async (dispatch) => {
     let { data } = await axios.post("/api/users/signup", datas);
     console.log(data);
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,

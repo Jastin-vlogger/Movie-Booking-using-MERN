@@ -1,63 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./movie.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Button from "react-bootstrap/Button";
 
 function MoviePage() {
-  const { category, id } = useParams();
+  const navigate = useNavigate();
   const movieInfo = useSelector((state) => state.movieInfo);
   const { movieInformation } = movieInfo;
   console.log(movieInformation);
-  const [item, setItem] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
 
-  useEffect(() => {
-    const getDetail = async () => {
-      // const response = await tmdbApi.detail(category, id, {params:{}});
-      // setItem(response);
-      window.scrollTo(0, 0);
-    };
-    getDetail();
-  }, [category, id]);
+  const showtimes = ["7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM"];
+
+  function handleDateChange(date) {
+    setSelectedDate(date);
+  }
+
+  function handleShowtimeClick(showtime) {
+    setSelectedShowtime(showtime);
+  }
+
+  useEffect(()=>{
+    
+  },[])
 
   return (
     <>
       <main>
         <article>
-          <section class="movie-detail">
-            <div class="container">
-              <figure class="movie-detail-banner">
+          <section className="movie-detail">
+            <div className="container">
+              <figure className="movie-detail-banner">
                 <img
-                  src="https://images.unsplash.com/photo-1672266199924-9e84bcaefbc3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                  src={`http://localhost:3008/movies/${movieInformation._id}.jpg`}
                   alt="Free guy movie poster"
                 />
 
-                <button class="play-btn">
+                <button
+                  className="play-btn"
+                  onClick={() => navigate("/moviepage/trailer")}
+                >
                   <ion-icon name="play-circle-outline"></ion-icon>
                 </button>
               </figure>
 
-              <div class="movie-detail-content">
-                <h1 class="h1 detail-title">
+              <div className="movie-detail-content">
+                <h1 className="h1 detail-title">
                   <strong>{movieInformation.title} </strong>
                 </h1>
 
-                <div class="meta-wrapper">
-                  <div class="badge-wrapper">
-                    <div class="badge badge-fill">PG 13</div>
+                <div className="meta-wrapper">
+                  <div className="badge-wrapper">
+                    <div className="badge badge-fill">PG 13</div>
 
-                    <div class="badge badge-outline">HD</div>
+                    <div className="badge badge-outline">HD</div>
                   </div>
 
-                  <div class="ganre-wrapper">
+                  <div className="ganre-wrapper">
                     <Link href="#">{movieInformation.Genre}</Link>
                   </div>
 
-                  <div class="date-time">
+                  <div className="date-time">
                     <div>
                       <ion-icon name="calendar-outline"></ion-icon>
 
-                      <time datetime="2021">2021</time>
+                      <time datetime="2021">
+                        {movieInformation.startDate.slice(0, 4)}
+                      </time>
                     </div>
 
                     <div>
@@ -70,25 +84,41 @@ function MoviePage() {
                   </div>
                 </div>
 
-                <p class="storyline">{movieInformation.description}</p>
+                <p className="storyline">{movieInformation.description}</p>
 
-                <div class="details-actions">
-                  <button class="share">
+                <div className="details-actions">
+                  <button className="share">
                     <ion-icon name="share-social"></ion-icon>
 
                     <span>Share</span>
                   </button>
-                  <button class="btn btn-primary">
+                  <button className="btn btn-primary">
                     <ion-icon name="play"></ion-icon>
 
                     <span>Watch Now</span>
                   </button>
                 </div>
 
-                <Link download class="download-btn">
-                  <span>Download</span>
+                <Link className="download-btn">
+                  <div className="date">
+                    <DatePicker
+                      style={{ backgroundColor: "red" }}
+                      selected={selectedDate}
+                      onChange={handleDateChange}
+                    />
+                  </div>
 
-                  <ion-icon name="download-outline"></ion-icon>
+                  {showtimes.map((showtime) => (
+                    <Button
+                      key={showtime}
+                      variant={
+                        showtime === selectedShowtime ? "primary" : "secondary"
+                      }
+                      onClick={() => handleShowtimeClick(showtime)}
+                    >
+                      {showtime}
+                    </Button>
+                  ))}
                 </Link>
               </div>
             </div>
@@ -96,18 +126,9 @@ function MoviePage() {
         </article>
       </main>
 
-      <Link href="#top" class="go-top" data-go-top>
+      <Link href="#top" className="go-top" data-go-top>
         <ion-icon name="chevron-up"></ion-icon>
       </Link>
-
-      <script
-        type="module"
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-      ></script>
-      <script
-        nomodule
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-      ></script>
     </>
   );
 }

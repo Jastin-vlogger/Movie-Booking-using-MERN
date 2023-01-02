@@ -6,6 +6,7 @@ import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { Button } from "../../../components/Public/PublicDashboard/components/Buttton/Button";
 import { Link } from "react-router-dom";
+import Table from "react-bootstrap/Table";
 
 function ScreensList() {
   const dispatch = useDispatch();
@@ -24,13 +25,28 @@ function ScreensList() {
 
   return (
     <div>
-
       <Button>
         <Link to={"/theater/addShows"}> Add shows </Link>
       </Button>
-      {screens?.map((val) => {
-        return <p>{val.screenName}</p>;
-      })}
+
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Screen Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {screens?.map((val,i) => {
+            return (
+              <tr>
+                <td>{i+1}</td>
+                <td>{val.screenName}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
     </div>
   );
 }

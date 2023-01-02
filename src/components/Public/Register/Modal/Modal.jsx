@@ -31,9 +31,12 @@ function Modals() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const userinfo = useSelector((state) => state.userLogin);
-  const { loading, userInfo, error } = userinfo;
-  console.log(userInfo ,"njannnn userinfo",loading)
+  // const userinfo = useSelector((state) => state.userLogin);
+  // const { loading, userInfo, error } = userinfo;
+  // console.log(userInfo ,"njannnn userinfo",loading)
+  const userLogin = useSelector(state => state.userLogin)
+  const {userInfo} = userLogin
+  console.log(userInfo) 
 
   useEffect(()=>{
     if(userInfo){
@@ -53,25 +56,10 @@ function Modals() {
     window.open("http://localhost:3008/auth/google", "_self");
   };
 
-  const generateError = (error) =>
-    toast.error(error, {
-      position: "top-right",
-    });
 
   const onSubmit = async (data) => {
     console.log(data);
-    // dispatch({type:USER_LOGIN_REQUEST,payload:data});
     dispatch(registration(data));
-    // axios.post("/api/users/signup", data).then((response) => {
-    //   console.log(response.data);
-    //   if (response.data.status) {
-    //     handleClose();
-
-    //     navigate("/");
-    //   } else {
-    //     generateError(errors);
-    //   }
-    // });
   };
 
   const handleclosex = () => {
@@ -83,7 +71,6 @@ function Modals() {
       <Button buttonStyle="btn--outline" onClick={handleOpen}>
         Sign Up
       </Button>
-      {loading && <Loading />}
       <Modal
         open={open}
         onClose={handleClose}
