@@ -13,13 +13,15 @@ import AddScre from "./pages/theater/AddScre";
 import Screen from "./pages/theater/Screen";
 import AddShow from "./pages/theater/AddShow";
 import TrailerPage from "./pages/Public/TrailerPage";
+import ShowTime from "./pages/Public/ShowTime";
 
 function Routess() {
   return (
     <Routes>
       <Route exact path="/" element={<HomePage />} />
       <Route exact path="/moviepage" element={<Moviepage />} />
-      <Route exact path="/moviepage/trailer" element={<TrailerPage />} />
+      <Route exact path="/moviepage/trailer" element={<TrailerPage />} /> 
+      <Route exact path="/buytickets/:id/select_screen" element={<ShowTime />} /> 
 
       {/* admin routes */}
       <Route exact path="/admin" element={<Dashboards />} />

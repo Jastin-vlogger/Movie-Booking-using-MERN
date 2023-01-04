@@ -19,6 +19,9 @@ import axios from "../../../axios/axios";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
 
 function AddShows() {
   const [data, setData] = useState([]);
@@ -31,7 +34,17 @@ function AddShows() {
   const [sname, setsname] = useState();
   const [time, setTime] = useState();
   console.log(screen);
-  
+  const [values, setValues] = useState(
+    [1, 2, 3].map((number) =>
+      new DateObject().set({
+        day: number,
+        hour: number,
+        minute: number,
+        second: number,
+      })
+    )
+  );
+  console.log(values);
   const token = cookies.TheaterToken;
   const decoded = jwt_decode(token);
   const id = decoded.id;
@@ -45,7 +58,6 @@ function AddShows() {
     setstatus(event.target.value);
   };
   const handleScreen = (event) => {
-    console.log(event.target.value);
     setsname(event.target.value);
   };
   const handleTime = (event) => {
@@ -62,7 +74,6 @@ function AddShows() {
     axios
       .get("/api/users/movieInfo")
       .then(({ data }) => {
-        console.log(data);
         setData(data);
       })
       .catch((error) => {
@@ -72,7 +83,6 @@ function AddShows() {
     axios
       .get(`/api/theater/screenInfo/${id}`)
       .then(({ data }) => {
-        console.log(data);
         setscreen(data);
       })
       .catch((error) => {
@@ -81,19 +91,30 @@ function AddShows() {
   }, []);
 
   const onSubmit = async (data) => {
-    // const token = cookies.TheaterToken;
-    // const decoded = jwt_decode(token);
-    console.log("fffaaa", name);
-    console.log("fffaaa", price);
-    console.log("fffaaa", status);
+    // const token = cookies.jwt;
+    // const decoded = await jwt_decode(token);
+    // setCurrentUser(decoded.id);
     console.log("data", data);
+    data.theaterId = id;
     data.movieName = name;
     data.price = price;
     data.status = status;
     data.screen = sname;
     data.time = time;
     data.id = id;
-
+    let dateData = [];
+    values.forEach((element) => {
+      if (element.hour >= 12) {
+        dateData.push(
+          `${element.day}/${element.month.name}/${element.year} ${element.hour}:${element.minute} `
+        );
+      } else {
+        dateData.push(
+          `${element.day}/${element.month.name}/${element.year} ${element.hour}:${element.minute} `
+        );
+      }
+    });
+    data.dateData = dateData;
     await axios.post("/api/theater/addShow", data);
     navigate("/theater/");
   };
@@ -134,12 +155,13 @@ function AddShows() {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} lg={6}>
                 <FormControl variant="filled" color="secondary" fullWidth>
-                  <InputLabel id="demo-simple-select-filled-label">
+                  {/* <InputLabel id="demo-simple-select-filled-label">
                     Show timing
-                  </InputLabel>
-                  <Select
+                  </InputLabel> */}
+                  {/* <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={name}
@@ -157,7 +179,17 @@ function AddShows() {
                         {time}
                       </MenuItem>
                     ))}
-                  </Select>
+                  </Select> */}
+                  <DatePicker
+                    value={values}
+                    onChange={setValues}
+                    format="MM/DD/YYYY HH:mm:ss"
+                    multiple
+                    plugins={[
+                      <TimePicker position="bottom" />,
+                      <DatePanel markFocused />,
+                    ]}
+                  />
                 </FormControl>
               </Grid>
               <Grid item lg={6} xs={12}>
@@ -248,15 +280,15 @@ function AddShows() {
                         <em>None</em>
                       </MenuItem>
                       {screen?.map((moviename) => {
-                        console.log(moviename)
-                       return <MenuItem value={moviename.screenName}>
-                          {moviename.screenName}
-                        </MenuItem>
+                        return (
+                          <MenuItem value={moviename.screenName}>
+                            {moviename.screenName}
+                          </MenuItem>
+                        );
                       })}
                     </Select>
                   </FormControl>
                 </Grid>
-                
               </Grid>
               <Grid item xs={12} lg={6}>
                 <FormControl variant="filled" color="secondary" fullWidth>

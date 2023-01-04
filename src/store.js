@@ -9,6 +9,7 @@ import {
   screenList,
 } from "./reducers/theaterReducer";
 import thunk from "redux-thunk";
+import { dateInfoReducer } from "./reducers/bookingReducer";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   theaterScreenAdd,
   screenList,
   movieInfo,
+  dateData :dateInfoReducer ,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
