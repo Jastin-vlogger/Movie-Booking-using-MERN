@@ -20,8 +20,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import dayjs from "dayjs";
+import Stack from "@mui/material/Stack";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 
 function AddShows() {
   const [data, setData] = useState([]);
@@ -45,6 +51,15 @@ function AddShows() {
     )
   );
   console.log(values);
+  const [startDate, setStartDate] = React.useState(dayjs(new Date()));
+  const [endDate, setEndDate] = React.useState(dayjs(new Date()));
+
+  const handleStrateDate = (newValue) => {
+    setStartDate(newValue);
+  };
+  const handleEndDate = (newValue) => {
+    setEndDate(newValue);
+  };
   const token = cookies.TheaterToken;
   const decoded = jwt_decode(token);
   const id = decoded.id;
@@ -100,24 +115,17 @@ function AddShows() {
     data.price = price;
     data.status = status;
     data.screen = sname;
-    data.time = time;
+   let time2 =  time.split(',')
+    data.time = time2;
+
     data.id = id;
-    let dateData = [];
-    values.forEach((element) => {
-      if (element.hour >= 12) {
-        dateData.push(
-          `${element.day}/${element.month.name}/${element.year} ${element.hour}:${element.minute} `
-        );
-      } else {
-        dateData.push(
-          `${element.day}/${element.month.name}/${element.year} ${element.hour}:${element.minute} `
-        );
-      }
-    });
-    data.dateData = dateData;
+    data.startDate = startDate;
+    data.endDate = endDate;
     await axios.post("/api/theater/addShow", data);
     navigate("/theater/");
   };
+
+  const today = new Date();
 
   return (
     <ThemeProvider>
@@ -158,38 +166,34 @@ function AddShows() {
 
               <Grid item xs={12} lg={6}>
                 <FormControl variant="filled" color="secondary" fullWidth>
-                  {/* <InputLabel id="demo-simple-select-filled-label">
-                    Show timing
-                  </InputLabel> */}
-                  {/* <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    value={name}
-                    onChange={handleTime}
-                  >
-                    {[
-                      "10:00 am",
-                      "12:00 pm",
-                      "02:15 pm",
-                      "03:50 pm",
-                      " 06:00 pm",
-                      "09:00pm",
-                    ].map((time) => (
-                      <MenuItem key={`time-${time}`} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select> */}
-                  <DatePicker
-                    value={values}
-                    onChange={setValues}
-                    format="MM/DD/YYYY HH:mm:ss"
-                    multiple
-                    plugins={[
-                      <TimePicker position="bottom" />,
-                      <DatePanel markFocused />,
-                    ]}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack spacing={3}>
+                      <DesktopDatePicker
+                        minDate={today}
+                        label="Date desktop"
+                        inputFormat="MM/DD/YYYY"
+                        value={startDate}
+                        onChange={handleStrateDate}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </Stack>
+                  </LocalizationProvider>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <FormControl variant="filled" color="secondary" fullWidth>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack spacing={3}>
+                      <DesktopDatePicker
+                        minDate={today}
+                        label="Date desktop"
+                        inputFormat="MM/DD/YYYY"
+                        value={endDate}
+                        onChange={handleEndDate}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </Stack>
+                  </LocalizationProvider>
                 </FormControl>
               </Grid>
               <Grid item lg={6} xs={12}>
@@ -197,31 +201,12 @@ function AddShows() {
                   <TextField
                     className="focus"
                     variant="filled"
-                    label="Busness Days"
+                    label="Mention times in this formate 10:00 AM"
                     color="secondary"
                     fullWidth
                     margin="1"
-                    {...register("WeeklyDays", {
-                      required: true,
-                      minLength: 4,
-                      maxLength: 20,
-                      pattern: /^[^\s]+(?:$|.*[^\s]+$)/,
-                    })}
+                    onChange={handleTime}
                   />
-                  <span className="text-danger">
-                    {errors.name?.type === "required" && (
-                      <span>name is required</span>
-                    )}
-                    {errors.name?.type === "minLength" && (
-                      <span>name must morethan or equal to 4 Character</span>
-                    )}
-                    {errors.name?.type === "maxLength" && (
-                      <span>name must less than 20 Character</span>
-                    )}
-                    {errors.name?.type === "pattern" && (
-                      <span>Should not have spaces</span>
-                    )}
-                  </span>
                 </div>
               </Grid>
 

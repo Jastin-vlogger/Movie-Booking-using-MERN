@@ -210,11 +210,13 @@ function ShowTimePage({ filters }) {
                   {/* console.log(time); */}
                   {/* return ( */}
                   <div>
-                    {time.date.map((time, index) => {
+                    {time.data.time.map((time, index) => {
                       // const showTime = time.time.split(":").map(Number).shift();
-                      const showTime = time.split(" ");
-                      const showTime2 = showTime[1].split("-");
-                      const showMinutes = showTime2[1];
+                      // const showTime = time.split(" ");
+                      // const showTime2 = showTime[1].split("-");
+                      // const showMinutes = showTime2[1];
+                      const showTime = time.split(":").map(Number).shift();
+                      const showMinutes = +time.split(":")[1].split(" ").shift();
                       
                       return (
                         // <>heelo</>
@@ -239,7 +241,7 @@ function ShowTimePage({ filters }) {
                           key={index + 1}
                           className={styles.button}
                         >
-                          {showTime2}
+                          {time}
                           <div className={styles.price__container}>
                             <div>
                               <p>Rs. 150</p>

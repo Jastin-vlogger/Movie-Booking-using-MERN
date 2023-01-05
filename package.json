@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
     "@mui/x-data-grid": "^5.17.14",
+    "@mui/x-date-pickers": "^5.0.12",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
     "@nivo/geo": "^0.80.0",
