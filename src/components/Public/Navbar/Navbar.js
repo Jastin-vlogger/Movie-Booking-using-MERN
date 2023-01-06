@@ -7,8 +7,10 @@ import "./Navbar.css";
 import { useSelector } from "react-redux";
 import { NavDropdown } from "react-bootstrap";
 import { Button } from "../PublicDashboard/components/Buttton/Button";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Navbar({ user }) {
+  const [query, setQuery] = React.useState("");
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -51,6 +53,14 @@ function Navbar({ user }) {
           </Link>
           <div className="menu-icon" onClick={handleNav}>
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
+          </div>
+          <div className='searchBar'>
+            <SearchIcon />
+            <input
+              type="text"
+              placeholder="Search for Movies"
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">

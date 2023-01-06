@@ -114,6 +114,7 @@ function Cards() {
         </Slider>
       )}
     </div>
+   
   );
 }
 

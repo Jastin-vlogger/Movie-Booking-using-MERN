@@ -97,7 +97,7 @@
 }
 
 .container__card__info__times__container>div>div {
-    /* display: flex; */
+    display: flex;
     position: relative;
 }
 

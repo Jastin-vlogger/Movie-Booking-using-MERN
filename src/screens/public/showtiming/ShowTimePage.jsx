@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { BsHeartFill, BsCircleFill } from "react-icons/bs";
 import { VscDeviceMobile } from "react-icons/vsc";
 import { IoFastFoodOutline } from "react-icons/io5";
-import styles from "../../../components/Public/Cinemas.module.css";
+import styles from "../../../components/Public/styling/Cinemas.module.css";
 // import { handleAddingSeatingData, handleSelectNameTime } from "../../Redux/booking_details/actions";
 // import 'antd/dist/antd.css';
 import { Modal, Button } from "antd";
 import Seating from "../../../components/Public/Seating";
+import { handleAddingSeatingData, handleSelectNameTime } from "../../../action/bookingAction";
+import SummaryPage from "../../../components/Public/SummaryPage";
 // import Seating from "../Seating";
 // import SummaryPage from "../../Pages/SummeryPage"
 
@@ -90,27 +92,35 @@ function ShowTimePage({ filters }) {
   };
 
   const handleClick = (name, time) => {
-    // dispatch(handleSelectNameTime(name, time))
+    console.log(name,time)
+    dispatch(handleSelectNameTime(name, time))
     showModal();
   };
 
   const handleCloseSeatingModal = (seatingData) => {
     setSeatingModalOpen(false);
-    // setFoodModalOpen(true);
-    // dispatch(handleAddingSeatingData(seatingData));
+    setFoodModalOpen(true);
+    console.log(seatingData)
+    dispatch(handleAddingSeatingData(seatingData));
   };
 
-  // const handleCloseFoodModal = () => {
-  //     setFoodModalOpen(false)
-  // }
+  const handleCloseFoodModal = () => {
+      setFoodModalOpen(false)
+  }
 
   const handleCloseSeatingButton = () => {
     setSeatingModalOpen(false);
   };
-  return seatingModalOpen ? <Seating handleCloseSeatingButton={handleCloseSeatingButton} seatingActive={seatingModalOpen} handleCloseSeatingModal={handleCloseSeatingModal} /> : (
-//   return (
+  return seatingModalOpen ? (
+    <Seating
+      handleCloseSeatingButton={handleCloseSeatingButton}
+      seatingActive={seatingModalOpen}
+      handleCloseSeatingModal={handleCloseSeatingModal}
+    />
+  ) : (
+    //   return (
     <div className={styles.container}>
-      {/* <SummaryPage foodModalOpen={foodModalOpen} handleCloseFoodModal={handleCloseFoodModal} /> */}
+      <SummaryPage foodModalOpen={foodModalOpen} handleCloseFoodModal={handleCloseFoodModal} />
       <Modal
         title="Terms & Conditions"
         open={visible}
@@ -186,103 +196,104 @@ function ShowTimePage({ filters }) {
         </div>
       </div>
       <div style={{ padding: "15px" }}>
-        {dateInfo?.map((time, index) => {
-            return(
-               <div key={time.theaterName} className={styles.container__card}>
-            <div className={styles.container__card__title}>
-              <BsHeartFill className={styles.container__card__title__icon} />
-              <h4>{time.theaterName}</h4>
-            </div>
-            <div className={styles.container__card__info}>
-              <div className={styles.container__card__info__options}>
-                <div style={{ color: "#49BA8E" }}>
-                  <VscDeviceMobile />
-                  <span>M-Ticket</span>
-                </div>
-                <div style={{ color: "#FFB23F" }}>
-                  <IoFastFoodOutline />
-                  <span>F&B</span>
-                </div>
+        {dateInfo?.map((theater, index) => {
+          return (
+            <div key={theater.theaterName} className={styles.container__card}>
+              <div className={styles.container__card__title}>
+                <BsHeartFill className={styles.container__card__title__icon} />
+                <h4>{theater.theaterName}</h4>
               </div>
-              <div className={styles.container__card__info__times__container}>
-                <div>
-                  {/* {dateInfo?.map((time, index) => { */}
-                  {/* console.log(time); */}
-                  {/* return ( */}
+              <div className={styles.container__card__info}>
+                <div className={styles.container__card__info__options}>
+                  <div style={{ color: "#49BA8E" }}>
+                    <VscDeviceMobile />
+                    <span>M-Ticket</span>
+                  </div>
+                  <div style={{ color: "#FFB23F" }}>
+                    <IoFastFoodOutline />
+                    <span>F&B</span>
+                  </div>
+                </div>
+                <div className={styles.container__card__info__times__container}>
                   <div>
-                    {time.data.time.map((time, index) => {
-                      // const showTime = time.time.split(":").map(Number).shift();
-                      // const showTime = time.split(" ");
-                      // const showTime2 = showTime[1].split("-");
-                      // const showMinutes = showTime2[1];
-                      const showTime = time.split(":").map(Number).shift();
-                      const showMinutes = +time.split(":")[1].split(" ").shift();
-                      
-                      return (
-                        // <>heelo</>
-                        <div
-                          onClick={() =>
-                            handleClick(movieInformation.title, time)
-                          }
-                          style={
-                            amOrPm === "AM" ||
-                            (showTime === currentTime
-                              ? showMinutes > new Date().getMinutes()
-                                ? true
-                                : false
-                              : showTime > currentTime && showTime !== 12) ||
-                            new Date() > new Date().getDate()
-                              ? { pointerEvents: "all" }
-                              : {
-                                  pointerEvents: "none",
-                                  color: "rgb(192,192,192)",
-                                }
-                          }
-                          key={index + 1}
-                          className={styles.button}
-                        >
-                          {time}
-                          <div className={styles.price__container}>
-                            <div>
-                              <p>Rs. 150</p>
-                              <span>NORMAL</span> <br />
-                              <span style={{ color: "#4abd5d" }}>
-                                Available
-                              </span>
-                            </div>
-                            <div>
-                              <p>Rs. 200</p>
-                              <span>CLASSIC</span> <br />
-                              <span style={{ color: "#4abd5d" }}>
-                                Available
-                              </span>
-                            </div>
-                            <div>
-                              <p>Rs. 300</p>
-                              <span>VIP</span> <br />
-                              <span style={{ color: "#4abd5d" }}>
-                                Available
-                              </span>
+                    {/* {dateInfo?.map((time, index) => { */}
+                    {/* console.log(time); */}
+                    {/* return ( */}
+                    <div>
+                      {theater.data.time.map((time, index) => {
+                        // const showTime = time.time.split(":").map(Number).shift();
+                        // const showTime = time.split(" ");
+                        // const showTime2 = showTime[1].split("-");
+                        // const showMinutes = showTime2[1];
+                        const showTime = time.split(":").map(Number).shift();
+                        const showMinutes = +time
+                          .split(":")[1]
+                          .split(" ")
+                          .shift();
+
+                        return (
+                          // <>heelo</>
+                          <div
+                            onClick={() =>
+                              handleClick(theater.theaterName, time)
+                            }
+                            style={
+                              amOrPm === "AM" ||
+                              (showTime === currentTime
+                                ? showMinutes > new Date().getMinutes()
+                                  ? true
+                                  : false
+                                : showTime > currentTime && showTime !== 12) ||
+                              new Date() > new Date().getDate()
+                                ? { pointerEvents: "all" }
+                                : {
+                                    pointerEvents: "none",
+                                    color: "rgb(192,192,192)",
+                                  }
+                            }
+                            key={index + 1}
+                            className={styles.button}
+                          >
+                            {time}
+                            <div className={styles.price__container}>
+                              <div>
+                                <p>Rs. 150</p>
+                                <span>NORMAL</span> <br />
+                                <span style={{ color: "#4abd5d" }}>
+                                  Available
+                                </span>
+                              </div>
+                              <div>
+                                <p>Rs. 200</p>
+                                <span>CLASSIC</span> <br />
+                                <span style={{ color: "#4abd5d" }}>
+                                  Available
+                                </span>
+                              </div>
+                              <div>
+                                <p>Rs. 300</p>
+                                <span>VIP</span> <br />
+                                <span style={{ color: "#4abd5d" }}>
+                                  Available
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
+                    {/* ); */}
+                    {/* })} */}
                   </div>
-                  {/* ); */}
-                  {/* })} */}
                 </div>
               </div>
             </div>
-          </div>
-            )
-          
+          );
         })}
       </div>
     </div>
-//   );
-
-  )
+    //   );
+  );
 }
 
 export default ShowTimePage;

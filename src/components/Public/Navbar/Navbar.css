@@ -9,6 +9,25 @@
     top: 0;
     z-index: 999;
   }
+
+  .searchBar {
+    background: white;
+    width: 60%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 0 20px;
+  }
+  .searchBar input {
+    border: none;
+    background: none;
+    margin: 0 10px;
+    outline: none;
+    width: 70%;
+    height: 30px;
+  }
   
   .navbar-container {
     display: flex;

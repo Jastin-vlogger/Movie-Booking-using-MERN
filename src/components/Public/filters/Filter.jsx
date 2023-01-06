@@ -1,6 +1,6 @@
 import React from "react";
 import Calendar from "../Calendar";
-import DropDowns from "../DropDowns";
+// import DropDowns from "../DropDowns";
 
 function Filter({ handleFilters, filters }) {
   return (

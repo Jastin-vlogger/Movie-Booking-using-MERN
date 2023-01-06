@@ -1,0 +1,129 @@
+.swiper {
+    /* width: 100%; */
+    /* height: 600px; */
+    /* margin-bottom: 100px; */
+  }
+  
+  .swiper-slide {
+    /* max-width: 500px; */
+    font-size: 18px;
+    
+    margin-bottom: 100px;
+  
+  
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  
+  /* .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  } */
+  .cardContent{
+      padding-top: 1rem;
+      line-height: 1rem;
+  
+    }
+    
+    .cardContent .title{
+      color: white;
+      font-size: 16px;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+    .description{
+      color: gray;
+      font-size: 12px;
+    }
+  
+  
+    @media only screen and (max-width: 870px) {
+      .swiper-button-prev,
+      .swiper-button-next{
+          display: none !important;
+        }
+        .section{
+          padding: 0 3rem !important;
+      }
+      
+    }
+    @media only screen and (max-width: 480px) {
+  
+      .card {
+        height: 250 !important;
+        width: 50% !important;
+        margin-top: 20px;
+        font-family: Roboto, sans-serif;
+        transition: .3s;
+        cursor: pointer;
+      }
+    }
+  
+    .swiper-button-prev {
+      /* background-image: url(../../../images/next.png);
+      transform: rotate(180deg);
+      background-size: 20px !important;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: center;
+      background-color: rgb(128, 128, 128);
+      border-radius: 50rem;
+      height: 40px !important;
+      width: 40px !important;
+      left: 0px !important;
+      top: 40% !important; */
+    }
+    .swiper-button-next {
+/*   
+      background-image: url(../../../images/next.png);
+      background-size: 20px !important;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: center;
+      background-color: rgb(128, 128, 128);
+      border-radius: 50rem;
+      height: 40px !important;
+      width: 40px !important;
+      right: 7px !important;
+      top: 40% !important; */
+    }
+  
+    .swiper-button-prev::after {
+      display: none;
+    }
+    .swiper-button-next::after {
+      display: none;
+    }
+    .card {
+      max-width: 240px;
+  
+      width: 90%;
+      margin-top: 20px;
+      font-family: Roboto, sans-serif;
+      transition: .3s;
+      cursor: pointer;
+      height: 350px;
+    }
+  
+    
+    .card img {
+      
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+    .swiper-slide{
+      height: max-content;
+    }

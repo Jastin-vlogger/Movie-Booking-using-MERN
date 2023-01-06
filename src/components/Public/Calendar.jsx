@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
 // import { handleSelectDate } from "../../Redux/booking_details/actions";
-import styles from "./Cinemas.module.css";
+import styles from "./styling/Cinemas.module.css";
 import "react-multi-carousel/lib/styles.css";
 import { handleSelectDate } from "../../action/bookingAction";
 
