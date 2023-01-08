@@ -9,7 +9,7 @@ import {
   screenList,
 } from "./reducers/theaterReducer";
 import thunk from "redux-thunk";
-import { dateInfoReducer, dateInformation } from "./reducers/bookingReducer";
+import { dateInfoReducer, dateInformation, seatInfomation, selectDateInfo } from "./reducers/bookingReducer";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -22,7 +22,9 @@ const reducer = combineReducers({
   movieInfo,
   dateData :dateInfoReducer ,
   dateInformationSelected:dateInformation,
-});
+  date:selectDateInfo,
+  seats:seatInfomation
+}); 
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))

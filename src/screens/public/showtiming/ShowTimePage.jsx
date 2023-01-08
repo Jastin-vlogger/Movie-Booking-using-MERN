@@ -8,12 +8,17 @@ import styles from "../../../components/Public/styling/Cinemas.module.css";
 // import 'antd/dist/antd.css';
 import { Modal, Button } from "antd";
 import Seating from "../../../components/Public/Seating";
-import { handleAddingSeatingData, handleSelectNameTime } from "../../../action/bookingAction";
+import {
+  getSeatInformation,
+  handleAddingSeatingData,
+  handleSelectNameTime,
+} from "../../../action/bookingAction";
 import SummaryPage from "../../../components/Public/SummaryPage";
 // import Seating from "../Seating";
 // import SummaryPage from "../../Pages/SummeryPage"
 
 function ShowTimePage({ filters }) {
+  const [gotTime,setGotTime] =useState('')
   const cinemas_data = useSelector((state) => state.movieInfo);
   const { movieInformation } = cinemas_data;
   console.log(movieInformation);
@@ -36,6 +41,8 @@ function ShowTimePage({ filters }) {
   let filteredData = cinemas_data;
   const [seatingModalOpen, setSeatingModalOpen] = useState(false);
   const [foodModalOpen, setFoodModalOpen] = useState(false);
+  const selectDate = useSelector((state) => state.date);
+  const { date } = selectDate;
 
   const handleFilter = () => {
     if (filters.length) {
@@ -62,7 +69,7 @@ function ShowTimePage({ filters }) {
     return strTime;
   }
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   const time = formatAMPM(new Date());
   const amOrPm = time[time.length - 2] + time[time.length - 1];
@@ -78,7 +85,23 @@ function ShowTimePage({ filters }) {
   };
 
   const handleOk = () => {
+    const dates = new Date();
+    dates.setFullYear(date.year);
+    dates.setMonth(date.month); // 0 represents January
+    dates.setDate(date.date);
+    const isoString = dates.toISOString();
+    const dateOnly = isoString.substring(0, 10);
+
+    console.log(dateOnly);
     setConfirmLoading(true);
+    dispatch(
+      getSeatInformation(
+        dateOnly,
+        movieInformation._id,
+        dateInfo[0].data.theaterId,
+        gotTime
+      )
+    );
     setTimeout(() => {
       setSeatingModalOpen(!seatingModalOpen);
       setVisible(false);
@@ -91,22 +114,23 @@ function ShowTimePage({ filters }) {
     setVisible(false);
   };
 
-  const handleClick = (name, time) => {
-    console.log(name,time)
-    dispatch(handleSelectNameTime(name, time))
+  const handleClick = (name, time, screen, theaterId) => {
+    console.log(name, time);
+    setGotTime(time)
+    dispatch(handleSelectNameTime(name, time, screen, theaterId));
     showModal();
   };
 
   const handleCloseSeatingModal = (seatingData) => {
     setSeatingModalOpen(false);
     setFoodModalOpen(true);
-    console.log(seatingData)
+    console.log(seatingData);
     dispatch(handleAddingSeatingData(seatingData));
   };
 
   const handleCloseFoodModal = () => {
-      setFoodModalOpen(false)
-  }
+    setFoodModalOpen(false);
+  };
 
   const handleCloseSeatingButton = () => {
     setSeatingModalOpen(false);
@@ -120,7 +144,10 @@ function ShowTimePage({ filters }) {
   ) : (
     //   return (
     <div className={styles.container}>
-      <SummaryPage foodModalOpen={foodModalOpen} handleCloseFoodModal={handleCloseFoodModal} />
+      <SummaryPage
+        foodModalOpen={foodModalOpen}
+        handleCloseFoodModal={handleCloseFoodModal}
+      />
       <Modal
         title="Terms & Conditions"
         open={visible}
@@ -235,7 +262,12 @@ function ShowTimePage({ filters }) {
                           // <>heelo</>
                           <div
                             onClick={() =>
-                              handleClick(theater.theaterName, time)
+                              handleClick(
+                                theater.theaterName,
+                                time,
+                                theater.screenName,
+                                theater.data.theaterId
+                              )
                             }
                             style={
                               amOrPm === "AM" ||

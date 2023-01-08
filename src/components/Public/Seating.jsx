@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import "./styling/seating.css";
 import { rows } from "./data";
 import { useSelector } from "react-redux";
-const Silver = ["A", "B", "C", "D","E","F","G","H"];
+const Silver = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const ticketList = {
   silver: [],
-  platinium: [],
   price: 0,
 };
 
@@ -13,24 +12,36 @@ function Seating({
   seatingActive = false,
   type1 = "SILVER",
   // type2 = "Premium",
-  ticketPrice1 = 112,
+  ticketPrice1 = 120,
   // ticketPrice2 = 100,
   handleCloseSeatingModal,
   handleCloseSeatingButton,
 }) {
   const cinemas_data = useSelector((state) => state.movieInfo);
   const { movieInformation } = cinemas_data;
-  console.log(movieInformation);
   const [seatActive, setSeatActive] = React.useState(seatingActive);
   const [active, setActive] = React.useState(false);
   const [rowsData, setRowData] = React.useState(rows);
   // const [rowsData2, setRowData2] = React.useState(rows2);
   const [price, setPrice] = React.useState(0);
-  const date = useSelector(state=>state.dateInformationSelected)  
-  const {dateInfo} = date;
-  console.log(dateInfo)
-  // console.log(rowsData,rowsData2,price)
-  // const movie_details = useSelector(state => state.booking_details);
+  const date = useSelector((state) => state.dateInformationSelected);
+  const selectDate = useSelector((state) => state.date);
+  const seats = useSelector((state) => state.seats);
+  const { loading, seat } = seats;
+
+  //seating array
+  console.log(seat);
+  console.log(rowsData);
+  for (const obj of rowsData) {
+    const matchingObject = seat.find(o => o.id === obj.id);
+    if (matchingObject) {
+      obj.seat = matchingObject.seat;
+      obj.isReserved = matchingObject.isReserved;
+    }
+  }
+  console.log(rowsData)
+  
+  const { dateInfo } = date;
 
   const monthNames = [
     "January",
@@ -66,20 +77,20 @@ function Seating({
     let a = rowsData.filter((e) => e.isSelected).length;
     // let b = rowsData2.filter((e) => e.isSelected).length;
 
-    setPrice(a * ticketPrice1 );
+    setPrice(a * ticketPrice1);
     setActive(price > 0 ? true : false);
   }, [price, rowsData]);
 
   const handleSeat = () => {
     rowsData.forEach((e) =>
-      e.isSelected ? ticketList.silver.push(e.seat) : ""
+      e.isSelected
+        ? ticketList.silver.push({ seat: e.seat, id: e.id, isReserved: true })
+        : ""
     );
     // rowsData2.forEach((e) =>
     //   e.isSelected ? ticketList.platinium.push(e.seat) : ""
     // );
     ticketList.price = price;
-    //ticketListfunc(ticketList);
-    console.log(ticketList);
     setSeatActive(false);
     handleCloseSeatingModal(ticketList);
   };
@@ -157,9 +168,7 @@ function Seating({
               ))}
             </div>
           </div>
-          <h5>
-            {/* {type2}-Rs. {ticketPrice2} */}
-          </h5>
+          <h5>{/* {type2}-Rs. {ticketPrice2} */}</h5>
           {/* <div className="seatingModal__seatContainer_can">
             <div style={{ display: "grid" }}>
               {Silver.map((e) => (

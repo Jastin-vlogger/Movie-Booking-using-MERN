@@ -4,9 +4,9 @@ import styles from '../styling/PaymentsPage.module.css';
 
 function SecondSection() {
     // const city = useSelector(state => state.app.city)
-    const date_data = useSelector((state) => state.dateData);
-    console.log(date_data)
-  const { dateInfo } = date_data;
+    const booking_details = useSelector(state=>state.dateInformationSelected)  
+const movieInfo = useSelector((state) => state.movieInfo);
+  const { movieInformation } = movieInfo;
 //   console.log(dateInfo);
 
     const handleChange = (e) => {
@@ -17,10 +17,10 @@ function SecondSection() {
             <div className={styles.summeryPart}>
                 <div>Booking Summery</div>
                 <div className={styles.categories}>
-                    <div style={{ textTransform: 'uppercase' }}>{dateInfo.theaterName}</div>
+                    <div style={{ textTransform: 'uppercase' }}>{booking_details.dateInfo?.name}</div>
                     {/* <div>{booking_details.silver.length + booking_details.platinium.length} Ticket(s)</div> */}
                 </div>
-                <span>{dateInfo[0].data.screen}</span>
+                <span>{booking_details.dateInfo?.screen}</span>
                 {/* <div className={styles.categories}>
                     <div style={{fontSize:'12px', lineHeight:'25px'}}>Internet handeling fees</div>
                     <div>Rs 28.00</div>
@@ -28,7 +28,7 @@ function SecondSection() {
                 <div className={styles.line}></div>
                 <div className={styles.categories}>
                     <div>Sub total</div>
-                    <div>Rs. {date_data.total_price}</div>
+                    <div>Rs. {booking_details.price}</div>
                 </div>
 
                 {/* <div className={styles.charity}>
@@ -48,7 +48,7 @@ function SecondSection() {
                 <div style={{ fontSize: '12px', margin: '0 30px', fontWeight: '600' }}>Your current State is <a href="">kerala</a></div>
                 <div className={styles.total}>
                     <div>Amount Payable</div>
-                    <div>Rs. {date_data.total_price}</div>
+                    <div>Rs. {booking_details.price}</div>
                 </div>
                 {/* <h3 className={styles.ticketType}>Select Ticket Type</h3> */}
 

@@ -16,6 +16,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
 
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { postBookingDetails } from "../../action/bookingAction";
 // import { getBookingDetails, postBookingDetails } from '../Redux/booking/action';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -55,22 +56,48 @@ function PaymentsPage({ proceed }) {
   // const city = useSelector((state) => state.app.city);
   // const booking_details = useSelector((state) => state.booking_details);
   const dispatch = useDispatch();
+
   const [counter, setCounter] = React.useState(true);
   const navigate = useNavigate();
-
+  const booking_details = useSelector((state) => state.dateInformationSelected);
+  const movieInfo = useSelector((state) => state.movieInfo);
+  const user = useSelector((state) => state.userLogin);
+  const selectDate = useSelector((state) => state.date);
+  const { date } = selectDate;
+  const { userInfo } = user;
+  const { dateInfo, silver } = booking_details;
+  const { movieInformation } = movieInfo;
   const handleClose = () => {
     setState(false);
   };
 
   const handlePayment = () => {
-    setState(true)
-      // dispatch(postBookingDetails(booking_details))
-      .then((res) => {
-        if (res) {
-          console.log("POSTED");
-          // dispatch(getBookingDetails());
-        }
-      });
+    setState(true);
+    const dates = new Date();
+    dates.setFullYear(date.year);
+    dates.setMonth(date.month); // 0 represents January
+    dates.setDate(date.date);
+
+    const isoString = dates.toISOString();
+    const dateOnly = isoString.substring(0, 10);
+    const data = {
+      cinemaId: dateInfo.theaterId,
+      cinemaScreen: dateInfo.screen,
+      startAt: dateInfo.time,
+      ticketPrice: "120",
+      seats: silver,
+      total: booking_details.price,
+      movieId: movieInformation._id,
+      phone: userInfo.phone,
+      showDate: dateOnly,
+      bookedDate: new Date(),
+    };
+    dispatch(postBookingDetails(data)).then((res) => {
+      if (res) {
+        console.log("POSTED");
+        // dispatch(getBookingDetails());
+      }
+    });
     setTimeout(() => {
       setCounter(false);
     }, 2000);
@@ -90,11 +117,9 @@ function PaymentsPage({ proceed }) {
       >
         <AppBar style={{ position: "relative", background: "#1F2533" }}>
           <Toolbar>
-            <Typography variant="h6" style={{ flex: 1,}}>
+            <Typography variant="h6" style={{ flex: 1 }}>
               <svg height="40" width="150">
-                <Link to="/">
-                  
-                </Link>
+                <Link to="/"></Link>
               </svg>
             </Typography>
           </Toolbar>

@@ -4,7 +4,7 @@ const rows = [
     { id: 3, number: 3, seat: "A3", isSelected: false, isReserved: false },
     { id: 4, number: 4, seat: "A4", isSelected: false, isReserved: false },
     { id: 5, number: 5, seat: "A5", isSelected: false, isReserved: false },
-    { id: 6, number: 6, seat: "A6", isSelected: false, isReserved: true },
+    { id: 6, number: 6, seat: "A6", isSelected: false, isReserved: false },
     { id: 7, number: 7, seat: "A7", isSelected: false, isReserved: false },
     { id: 8, number: 8, seat: "A8", isSelected: false, isReserved: false },
     {

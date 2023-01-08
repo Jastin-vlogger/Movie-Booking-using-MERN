@@ -4,20 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 // import { handleSelectDate } from "../../Redux/booking_details/actions";
 import styles from "./styling/Cinemas.module.css";
 import "react-multi-carousel/lib/styles.css";
-import { handleSelectDate } from "../../action/bookingAction";
+import { handleSelectDate, selectDate } from "../../action/bookingAction";
 
 function Calendar() {
   let currentDate = new Date().getDate();
   let currentDay = new Date().getDay();
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
   let [selectedDate, setSelectedDate] = useState(0);
   const dispatch = useDispatch();
   const movieInfo = useSelector((state) => state.movieInfo);
   const { movieInformation } = movieInfo;
-  console.log(movieInformation);
-  // const date = useSelector(state => state.booking_details);
-  console.log(selectedDate);
 
-  // console.log(currentDay)
   let dates = [];
   let weekdays = [
     "Sunday",
@@ -32,7 +30,12 @@ function Calendar() {
     if (currentDate > 30) currentDate = 1;
     if (currentDay === 7) currentDay = 0;
 
-    dates.push({ date: currentDate, day: weekdays[currentDay] });
+    dates.push({
+      date: currentDate,
+      day: weekdays[currentDay],
+      month: currentMonth,
+      year: currentYear,
+    });
     currentDate++;
     currentDay++;
   }
@@ -71,7 +74,14 @@ function Calendar() {
             className={styles.dateItem}
             onClick={() => {
               handleDateChange(index);
-              dispatch(handleSelectDate(dates[index].date, dates[index].day,movieInformation._id));
+              dispatch(
+                handleSelectDate(
+                  dates[index].date,
+                  dates[index].day,
+                  movieInformation._id
+                )
+              );
+              dispatch(selectDate(dates[index].date, dates[index].day, dates[index].month, dates[index].year));
             }}
             style={
               index === selectedDate

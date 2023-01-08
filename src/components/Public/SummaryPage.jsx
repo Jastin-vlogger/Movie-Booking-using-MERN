@@ -21,8 +21,9 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
   const [proceed, setProceed] = React.useState(false);
 //   const city = useSelector((state) => state.app.city);
 //   const foodArray = useSelector((state) => state.food.foodArray);
-  const booking_details = useSelector((state) => state.dateInformationSelected);
-  console.log(booking_details)
+const booking_details = useSelector(state=>state.dateInformationSelected)  
+const movieInfo = useSelector((state) => state.movieInfo);
+  const { movieInformation } = movieInfo;
   const dispatch = useDispatch();
 //   React.useEffect(() => {
 //     let sum = 0;
@@ -36,7 +37,6 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-  // console.log(foodArray, totalFood)
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -55,9 +55,6 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
   };
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open full-screen dialog
-      </Button> */}
       <Dialog
         fullScreen
         open={foodModalOpen}
@@ -75,7 +72,7 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
               <ChevronLeftIcon />
             </IconButton>
             <Typography variant="h6" style={{ flex: 1, color: "white" }}>
-              {booking_details.movie_name}
+              {movieInformation.title}
             </Typography>
             <Button autoFocus color="inherit" onClick={handleCloseFoodModal}>
               <ClearIcon />
@@ -90,11 +87,11 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
             <div>Booking Summery</div>
             <div className={styles.categories}>
               <div style={{ textTransform: "uppercase" }}>
-                {booking_details.cinemas_name}
+                {booking_details.dateInfo?.name}
               </div>
               <div>Rs {booking_details.price}</div>
             </div>
-            <span>AUDI 5</span>
+            <span>{booking_details.dateInfo?.screen}</span>
             <div className={styles.categories}>
               <div style={{ fontSize: "12px", lineHeight: "25px" }}>
                 Internet handeling fees
@@ -150,7 +147,7 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
             </div>
             <div className={styles.cancellation_policy}>
               You can cancel the tickets 20 min(s) before the show. Refunds will
-              be done according to <a href="">Cancellation Policy</a>
+              be done according to Cancellation Policy
             </div>
           </div>
         </div>
