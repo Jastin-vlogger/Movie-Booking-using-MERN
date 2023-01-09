@@ -22,8 +22,9 @@ function SummaryPage({ foodModalOpen, handleCloseFoodModal }) {
 //   const city = useSelector((state) => state.app.city);
 //   const foodArray = useSelector((state) => state.food.foodArray);
 const booking_details = useSelector(state=>state.dateInformationSelected)  
-const movieInfo = useSelector((state) => state.movieInfo);
-  const { movieInformation } = movieInfo;
+const movieInformation = useSelector(state => state.movie)
+console.log(movieInformation)
+const {movie,loading} = movieInformation
   const dispatch = useDispatch();
 //   React.useEffect(() => {
 //     let sum = 0;
@@ -72,7 +73,7 @@ const movieInfo = useSelector((state) => state.movieInfo);
               <ChevronLeftIcon />
             </IconButton>
             <Typography variant="h6" style={{ flex: 1, color: "white" }}>
-              {movieInformation.title}
+              {movie?.title}
             </Typography>
             <Button autoFocus color="inherit" onClick={handleCloseFoodModal}>
               <ClearIcon />

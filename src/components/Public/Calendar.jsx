@@ -13,8 +13,9 @@ function Calendar() {
   let currentYear = new Date().getFullYear();
   let [selectedDate, setSelectedDate] = useState(0);
   const dispatch = useDispatch();
-  const movieInfo = useSelector((state) => state.movieInfo);
-  const { movieInformation } = movieInfo;
+  const movieInformation = useSelector(state => state.movie)
+  console.log(movieInformation)
+  const {movie,loading} = movieInformation
 
   let dates = [];
   let weekdays = [
@@ -78,7 +79,7 @@ function Calendar() {
                 handleSelectDate(
                   dates[index].date,
                   dates[index].day,
-                  movieInformation._id
+                  movie._id
                 )
               );
               dispatch(selectDate(dates[index].date, dates[index].day, dates[index].month, dates[index].year));

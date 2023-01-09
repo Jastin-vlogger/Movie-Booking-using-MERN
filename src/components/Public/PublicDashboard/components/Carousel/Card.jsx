@@ -11,7 +11,7 @@ function Card(movie) {
         const handleChange = (movie) => {
             console.log(movie)
             dispatch(movieInfo(movie))
-            navigate('/moviepage')
+            navigate(`/moviepage/${movie._id}`)
         }
     return (
         <div onClick={()=>handleChange(movie)} className={styles.card}> 

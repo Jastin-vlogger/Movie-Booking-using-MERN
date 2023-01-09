@@ -19,7 +19,7 @@ function Routess() {
   return (
     <Routes>
       <Route exact path="/" element={<HomePage />} />
-      <Route exact path="/moviepage" element={<Moviepage />} />
+      <Route exact path="/moviepage/:id" element={<Moviepage />} />
       <Route exact path="/moviepage/trailer" element={<TrailerPage />} /> 
       <Route exact path="/buytickets/:id/select_screen" element={<ShowTime />} /> 
 

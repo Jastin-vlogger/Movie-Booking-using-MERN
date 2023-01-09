@@ -19,9 +19,9 @@ import SummaryPage from "../../../components/Public/SummaryPage";
 
 function ShowTimePage({ filters }) {
   const [gotTime,setGotTime] =useState('')
-  const cinemas_data = useSelector((state) => state.movieInfo);
-  const { movieInformation } = cinemas_data;
-  console.log(movieInformation);
+  const movieInformation = useSelector(state => state.movie)
+  console.log(movieInformation)
+  const {movie,loading} = movieInformation
   const date_data = useSelector((state) => state.dateData);
 
   const { dateInfo } = date_data;
@@ -38,21 +38,21 @@ function ShowTimePage({ filters }) {
   const data = useSelector((state) => state.booking_details);
   // const dispatch = useDispatch();
   // console.log(cinemas_data);
-  let filteredData = cinemas_data;
+  // let filteredData = cinemas_data;
   const [seatingModalOpen, setSeatingModalOpen] = useState(false);
   const [foodModalOpen, setFoodModalOpen] = useState(false);
   const selectDate = useSelector((state) => state.date);
   const { date } = selectDate;
 
-  const handleFilter = () => {
-    if (filters.length) {
-      filteredData = cinemas_data?.filter((item) => {
-        return filters.indexOf(item.sub_region) >= 0;
-      });
-    }
-  };
+  // const handleFilter = () => {
+  //   if (filters.length) {
+  //     filteredData = cinemas_data?.filter((item) => {
+  //       return filters.indexOf(item.sub_region) >= 0;
+  //     });
+  //   }
+  // };
 
-  handleFilter();
+  // handleFilter();
   React.useEffect(() => {
     window.scrollTo(window.scrollX, 0);
   }, [seatingModalOpen]);
@@ -97,7 +97,7 @@ function ShowTimePage({ filters }) {
     dispatch(
       getSeatInformation(
         dateOnly,
-        movieInformation._id,
+        movie._id,
         dateInfo[0].data.theaterId,
         gotTime
       )

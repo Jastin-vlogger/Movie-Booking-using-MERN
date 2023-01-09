@@ -17,8 +17,9 @@ function Seating({
   handleCloseSeatingModal,
   handleCloseSeatingButton,
 }) {
-  const cinemas_data = useSelector((state) => state.movieInfo);
-  const { movieInformation } = cinemas_data;
+  const movieInformation = useSelector(state => state.movie)
+  console.log(movieInformation)
+  const {movie} = movieInformation
   const [seatActive, setSeatActive] = React.useState(seatingActive);
   const [active, setActive] = React.useState(false);
   const [rowsData, setRowData] = React.useState(rows);
@@ -114,7 +115,7 @@ function Seating({
         <div>
           <div>
             <h4 style={{ color: "white", fontSize: 20 }}>
-              {movieInformation.title}
+              {movie.title}
             </h4>
             <h5 style={{ color: "white" }}>{dateInfo.name}</h5>
           </div>
@@ -130,7 +131,7 @@ function Seating({
         <div>
           <h3>
             {dateInfo.time} {monthNames[new Date().getMonth()]}{" "}
-            {movieInformation.Duration}
+            {movie.Duration}
           </h3>
         </div>
       </div>

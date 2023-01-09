@@ -5,47 +5,29 @@ import { Link } from "react-router-dom";
 import "./movie.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
-import Modal from "@mui/material/Modal";
+import { Modal, Button } from "antd";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import { Carousel } from "react-bootstrap";
+import { getMovieById, putMovies } from "../../../action/movieAction";
+import CloseIcon from "@mui/icons-material/Close";
+import { Input } from "antd";
+import ShowReview from "../../../components/Public/ShowReview";
+const { TextArea } = Input;
 
 function valuetext(value) {
   return `${value}`;
 }
 
-// const useStyles = makeStyles((theme) => ({
-//   modal: {
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   paper: {
-//     backgroundColor: theme.palette.background.paper,
-//     border: "2px solid #000",
-//     boxShadow: theme.shadows[5],
-//     height: "400px",
-//     width: "300px",
-//   },
-//   root: {
-//     width: 250,
-//     margin: 20,
-//     textAlign: "center",
-//   },
-// }));
-
 function MoviePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const movieInfo = useSelector((state) => state.movieInfo);
-  const { movieInformation } = movieInfo;
-  console.log(movieInformation);
+  // const movieInfo = useSelector((state) => state.movieInfo);
+  // const { movieInformation } = movieInfo;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedShowtime, setSelectedShowtime] = useState(null);
-
-  const showtimes = ["7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM"];
 
   function handleDateChange(date) {
     setSelectedDate(date);
@@ -56,17 +38,19 @@ function MoviePage() {
   }
 
   const [rValue, setRvalue] = React.useState(0);
+  const [tValue,setTvalue] =React.useState('')
   const [open, setOpen] = React.useState(false);
-  // const classes = useStyles();
   const { id } = useParams();
-  // const data = useSelector((state) => state.data.movies.data);
-  // const history = useHistory();
+
   const [action, setAction] = React.useState(false);
   // const isAuth = useSelector(state => state.app.isAuth)
+  const movieInformation = useSelector((state) => state.movie);
+  console.log(movieInformation);
+  const { movie, loading } = movieInformation;
 
   const [auth, setAuth] = React.useState(false);
   React.useEffect(() => {
-    // dispatch(getMovies(id));
+    dispatch(getMovieById(id));
     window.scrollTo(window.scrollX, 0);
   }, []);
   const handleOpen = () => {
@@ -80,14 +64,9 @@ function MoviePage() {
     setRvalue(v);
   };
   const handleRating = () => {
-    // dispatch(
-    //   putMovies(id, {
-    //     rating: {
-    //       percentage: data.rating.percentage,
-    //       no_of_ratings: data.rating.no_of_ratings + 1,
-    //     },
-    //   })
-    // );
+    setTvalue(null)
+    setRvalue(0)
+    dispatch(putMovies(movie._id, rValue,tValue));
     setOpen(false);
   };
 
@@ -122,12 +101,12 @@ function MoviePage() {
 
   return (
     <div>
-      {movieInfo && (
+      {movieInformation && (
         <>
           <div
             className="container"
             style={{
-              backgroundImage: `linear-gradient(90deg, rgb(34, 34, 34) 24.97%, rgb(34, 34, 34) 38.3%, rgba(34, 34, 34, 0.04) 97.47%, rgb(34, 34, 34) 100%),url(${`http://localhost:3008/movies/${movieInformation._id}.jpg`})`,
+              backgroundImage: `linear-gradient(90deg, rgb(34, 34, 34) 24.97%, rgb(34, 34, 34) 38.3%, rgba(34, 34, 34, 0.04) 97.47%, rgb(34, 34, 34) 100%),url(${`http://localhost:3008/movies/${movie?._id}.jpg`})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
@@ -135,21 +114,21 @@ function MoviePage() {
           >
             <div className="container__card">
               <img
-                src={`http://localhost:3008/movies/${movieInformation._id}.jpg`}
+                src={`http://localhost:3008/movies/${movie?._id}.jpg`}
                 alt="title"
               />
             </div>
             <div className="container__movieDetail">
-              <h1>{movieInformation.title}</h1>
+              <h1>{movie?.title}</h1>
               <div className="container__movieDetail_rating">
                 <img
                   src="https://www.leadingwithhonor.com/wp-content/uploads/2021/02/redheart.png"
                   alt="Rating"
                   style={{ width: 25 }}
                 />
-                <h1>{movieInformation.title}%</h1>
+                <h1>{movie?.title}%</h1>
                 <p style={{ marginBottom: 0 }}>
-                  {Math.ceil(movieInformation.title)} Ratings
+                  {Math.ceil(movie?.title)} Ratings
                 </p>
               </div>
               <div className="container__movieDetail_ratingButton">
@@ -176,12 +155,17 @@ function MoviePage() {
               </div>
               <div style={{ color: "white", fontSize: 18 }}>
                 <h5 style={{ color: "white", fontSize: 18 }}>
-                  {`${movieInformation.Duration} hr - ${
-                    movieInformation.Genre
-                  } - ${movieInformation.startDate.slice(0, 4)}`}
+                  {`${movie?.Duration} hr - ${
+                    movie?.Genre
+                  } - ${movie?.startDate?.slice(0, 4)}`}
                 </h5>
               </div>
-              <div className="BookButton" onClick={()=>navigate(`/buytickets/${movieInformation._id}/select_screen`)}>
+              <div
+                className="BookButton"
+                onClick={() =>
+                  navigate(`/buytickets/${movie._id}/select_screen`)
+                }
+              >
                 <button>Book Tickets</button>
               </div>
             </div>
@@ -189,7 +173,7 @@ function MoviePage() {
           <div className="middleContainer">
             <div>
               <h1>About the movie</h1>
-              <p>{movieInformation.description}</p>
+              <p>{movie?.description}</p>
             </div>
             <hr />
             <div>
@@ -247,6 +231,11 @@ function MoviePage() {
           BackdropProps={{
             timeout: 500,
           }}
+          okButtonProps={{ disabled: true }}
+          cancelButtonProps={{ disabled: true }}
+          footer={null}
+          header={null}
+          closable={false}
         >
           <Fade in={open}>
             <div>
@@ -255,14 +244,17 @@ function MoviePage() {
                   How was the movies?
                 </h5>
                 <p style={{ margin: 0, padding: 0 }}>
-                  {movieInfo && movieInfo.title}
+                  {movieInformation && movieInformation.title}
                 </p>
-                <button
+                <CloseIcon
+                  style={{
+                    position: "absolute",
+                    right: 10,
+                    top: 0,
+                    cursor: "pointer",
+                  }}
                   onClick={handleClose}
-                  style={{ position: "absolute", right: 10, top: 0 }}
-                >
-                  X
-                </button>
+                />
               </div>
               <hr />
               <div>
@@ -291,7 +283,7 @@ function MoviePage() {
                     color: "white",
                     display: "flex",
                     alignItems: "center",
-                    marginLeft: 60,
+                    marginLeft: 180,
                     position: "relative",
                   }}
                 >
@@ -308,6 +300,12 @@ function MoviePage() {
                     {rValue}%
                   </h1>
                 </div>
+                <hr />
+                <Typography id="discrete-slider" gutterBottom>
+                  Write something about movie
+                </Typography>
+                <hr />
+                <TextArea value={tValue} onChange={(e)=>setTvalue(e.target.value)} rows={4} />
               </div>
               <button
                 onClick={handleRating}
@@ -330,6 +328,7 @@ function MoviePage() {
           </Fade>
         </Modal>
       </div>
+      <ShowReview Review={movie?.Review}/>
     </div>
   );
 }
