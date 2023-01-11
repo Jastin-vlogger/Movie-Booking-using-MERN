@@ -14,7 +14,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
-
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { postBookingDetails } from "../../action/bookingAction";
 // import { getBookingDetails, postBookingDetails } from '../Redux/booking/action';
@@ -63,6 +64,11 @@ function PaymentsPage({ proceed }) {
   const movieInfo = useSelector((state) => state.movieInfo);
   const user = useSelector((state) => state.userLogin);
   const selectDate = useSelector((state) => state.date);
+  const payment = useSelector((state) => state.payment);
+  console.log(payment)
+  const { loading, paymentSuccess } = payment;
+  console.log(paymentSuccess);
+  // const { data, qrcode, status } = paymentSuccess;
   const { date } = selectDate;
   const { userInfo } = user;
   const { dateInfo, silver } = booking_details;
@@ -71,8 +77,10 @@ function PaymentsPage({ proceed }) {
     setState(false);
   };
 
-  const handlePayment = () => {
+  const handlePayment = (id) => {
     setState(true);
+    console.log(movieInformation);
+    console.log("hello im in payment");
     const dates = new Date();
     dates.setFullYear(date.year);
     dates.setMonth(date.month); // 0 represents January
@@ -91,6 +99,7 @@ function PaymentsPage({ proceed }) {
       phone: userInfo.phone,
       showDate: dateOnly,
       bookedDate: new Date(),
+      paymentId: id,
     };
     dispatch(postBookingDetails(data)).then((res) => {
       if (res) {
@@ -105,6 +114,11 @@ function PaymentsPage({ proceed }) {
   const handleMove = () => {
     navigate("/");
   };
+
+  const PUBLIC_KEY =
+    "pk_test_51MOZPkSFXMBK3kKaeJUxzL8qetea0RfCUAbS8VD0pGF7Q2qeVzwe2xvcaeBqcj8wOMSFTiJOdbVB4mGvrOwWJm1R00QbCdUXZr";
+
+  const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
   console.log(state);
   return (
@@ -127,7 +141,9 @@ function PaymentsPage({ proceed }) {
 
         <div className={styles.page}>
           <div className={styles.firstSection}>
-            <FirstSection handlePayment={handlePayment} />
+            <Elements stripe={stripeTestPromise}>
+              <FirstSection handlePayment={handlePayment} />
+            </Elements>
           </div>
           <div className={styles.secondSection}>
             <SecondSection />
@@ -178,6 +194,7 @@ function PaymentsPage({ proceed }) {
                 borderRadius: "5px",
               }}
             >
+              <img src={payment.paymentSuccess?.qrcode} alt="hello ser" />
               <h1>Congratulations!</h1>
               <div style={{ fontSize: "20px" }}>We have got your tickets</div>
             </div>

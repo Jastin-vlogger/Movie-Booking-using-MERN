@@ -11,6 +11,9 @@ import {
   ADD_MOVIE_REVIEW_REQUEST,
   ADD_MOVIE_REVIEW_SUCCESS,
   ADD_MOVIE_REVIEW_FAIL,
+  GET_MOVIE_REVIEW_BY_ID_REQUEST,
+  GET_MOVIE_REVIEW_BY_ID_SUCCESS,
+  GET_MOVIE_REVIEW_BY_ID_FAIL
 } from "../constants/movieConstants";
 import axios from "../axios/axios";
 
@@ -31,7 +34,7 @@ export const getMovies = () => async (dispatch) => {
   }
 };
 
-export const movieInfo = (movie) => async (dispatch) => {
+export const movieInfoStoreToState = (movie) => async (dispatch) => {
   try {
     dispatch({ type: GET_MOVIE_INFO_MOVIEPAGE_SUCCESS, payload: movie });
   } catch (error) {
@@ -83,3 +86,24 @@ export const putMovies = (id, rating, message) => async (dispatch) => {
     });
   }
 };
+
+
+
+export const getMovieReviewById = (id) => async (dispatch) => {
+  console.log(id)
+  try {
+    dispatch({ type: GET_MOVIE_REVIEW_BY_ID_REQUEST });
+    let { data } = await axios.get(`/api/users/movieReview/${id}`);
+    console.log(data);
+    dispatch({ type: GET_MOVIE_REVIEW_BY_ID_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_MOVIE_REVIEW_BY_ID_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+

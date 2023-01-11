@@ -14,6 +14,8 @@ import Screen from "./pages/theater/Screen";
 import AddShow from "./pages/theater/AddShow";
 import TrailerPage from "./pages/Public/TrailerPage";
 import ShowTime from "./pages/Public/ShowTime";
+import Chat from "./pages/theater/Chat";
+import AdminChat from "./pages/Admin/Chat";
 
 function Routess() {
   return (
@@ -26,6 +28,7 @@ function Routess() {
       {/* admin routes */}
       <Route exact path="/admin" element={<Dashboards />} />
       <Route exact path="/admin/movies" element={<Movie />} />
+      <Route exact path="/admin/messages" element={<AdminChat />} />
       <Route exact path="/admin/theaters" element={<Theater />} />
       <Route exact path="/admin/movies/addMovies" element={<AddMovies />} />
       <Route exact path="/admin/login" element={<Login />} />
@@ -37,6 +40,7 @@ function Routess() {
       <Route exact path="/theater/addScreen" element={<AddScre />} />
       <Route exact path="/theater/screens" element={<Screen />} />
       <Route exact path="/theater/addShows" element={<AddShow />} />
+      <Route exact path="/theater/messages" element={<Chat />} />
      
     </Routes>
   );

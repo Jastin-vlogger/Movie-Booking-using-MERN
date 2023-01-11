@@ -20,9 +20,9 @@ function ShowReview({Review}) {
           className="swiperr "
         >
           {Review?.map((item, index) => (
-            <SwiperSlide className="bg-white">
+            <SwiperSlide className="bg-black">
               <div className="flex flex-col w-full">
-                <div className="head flex justify-between text-black text-gray-800 w-full px-5">
+                <div className="head flex justify-between text-white text-white-800 w-full px-5">
                   <div className="user font-bold">User</div>
                   <div className="rating font-bold">
                     <StarIcon style={{ color: "red" }} />
@@ -30,7 +30,7 @@ function ShowReview({Review}) {
                   </div>
                 </div>
                 <div className=" px-5 mt-5 ">
-                  <p className="text-black text-left">
+                  <p className="text-white text-left">
                     {item.message}
                   </p>
                 </div>

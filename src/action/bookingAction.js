@@ -94,7 +94,7 @@ export const postBookingDetails = (datas) => async(dispatch)=>{
     console.log(datas)
     const {data}= await axios.post('/api/user/reservation',datas)
     console.log(data)
-    dispatch({type:ADD_BOOKING_DETAILS_SUCCESS})
+    dispatch({type:ADD_BOOKING_DETAILS_SUCCESS,payload:data})
   } catch (error) {
     dispatch({
       type: ADD_BOOKING_DETAILS_FAIL,

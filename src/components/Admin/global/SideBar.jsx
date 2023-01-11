@@ -123,8 +123,8 @@ function SideBar() {
             setSelected={setSelected}
           />
           <Item
-            title="Reservation"
-            to="/reservation"
+            title="Messages"
+            to="/admin/messages"
             icon={<ReceiptOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}

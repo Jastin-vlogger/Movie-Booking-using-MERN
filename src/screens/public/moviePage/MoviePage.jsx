@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./movie.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
@@ -11,7 +10,13 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import { Carousel } from "react-bootstrap";
-import { getMovieById, putMovies } from "../../../action/movieAction";
+import Loading from '../../../components/Loading/Loading'
+import {
+  getMovieById,
+  getMovieReviewById,
+  movieInfoStoreToState,
+  putMovies,
+} from "../../../action/movieAction";
 import CloseIcon from "@mui/icons-material/Close";
 import { Input } from "antd";
 import ShowReview from "../../../components/Public/ShowReview";
@@ -24,6 +29,7 @@ function valuetext(value) {
 function MoviePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState(false);
   // const movieInfo = useSelector((state) => state.movieInfo);
   // const { movieInformation } = movieInfo;
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -33,19 +39,17 @@ function MoviePage() {
     setSelectedDate(date);
   }
 
-  function handleShowtimeClick(showtime) {
-    setSelectedShowtime(showtime);
-  }
-
+  
   const [rValue, setRvalue] = React.useState(0);
-  const [tValue,setTvalue] =React.useState('')
+  const [tValue, setTvalue] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const { id } = useParams();
 
   const [action, setAction] = React.useState(false);
   // const isAuth = useSelector(state => state.app.isAuth)
   const movieInformation = useSelector((state) => state.movie);
-  console.log(movieInformation);
+  const review = useSelector((state) => state.review);
+  const { reiview } = review;
   const { movie, loading } = movieInformation;
 
   const [auth, setAuth] = React.useState(false);
@@ -53,6 +57,16 @@ function MoviePage() {
     dispatch(getMovieById(id));
     window.scrollTo(window.scrollX, 0);
   }, []);
+
+  React.useEffect(() => {
+    dispatch(getMovieReviewById(id));
+  }, []);
+
+  React.useEffect(() => {
+    dispatch(getMovieReviewById(id));
+    setRefresh(false);
+  }, [refresh, dispatch]);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -64,11 +78,19 @@ function MoviePage() {
     setRvalue(v);
   };
   const handleRating = () => {
-    setTvalue(null)
-    setRvalue(0)
-    dispatch(putMovies(movie._id, rValue,tValue));
+    setTvalue(null);
+    setRvalue(0);
+    dispatch(putMovies(movie._id, rValue, tValue));
     setOpen(false);
+    setRefresh(true);
   };
+  
+  function selectedMovieToState() {
+    // setSelectedShowtime(showtime);
+    dispatch(movieInfoStoreToState(movie));
+    navigate(`/buytickets/${movie._id}/select_screen`)
+  }
+
 
   // const handleClick = () => {
   //   if (isAuth) {
@@ -101,12 +123,13 @@ function MoviePage() {
 
   return (
     <div>
+      {loading && <Loading />}
       {movieInformation && (
         <>
           <div
             className="container"
             style={{
-              backgroundImage: `linear-gradient(90deg, rgb(34, 34, 34) 24.97%, rgb(34, 34, 34) 38.3%, rgba(34, 34, 34, 0.04) 97.47%, rgb(34, 34, 34) 100%),url(${`http://localhost:3008/movies/${movie?._id}.jpg`})`,
+              backgroundImage: `linear-gradient(90deg, rgb(34, 34, 34) 24.97%, rgb(34, 34, 34) 38.3%, rgba(34, 34, 34, 0.04) 97.47%, rgb(34, 34, 34) 100%),url(${`http://localhost:3008/movies/${movie?._doc?._id}.jpg`})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
@@ -114,21 +137,21 @@ function MoviePage() {
           >
             <div className="container__card">
               <img
-                src={`http://localhost:3008/movies/${movie?._id}.jpg`}
+                src={`http://localhost:3008/movies/${movie?._doc?._id}.jpg`}
                 alt="title"
               />
             </div>
             <div className="container__movieDetail">
-              <h1>{movie?.title}</h1>
+              <h1>{movie?._doc?.title}</h1>
               <div className="container__movieDetail_rating">
                 <img
                   src="https://www.leadingwithhonor.com/wp-content/uploads/2021/02/redheart.png"
                   alt="Rating"
                   style={{ width: 25 }}
                 />
-                <h1>{movie?.title}%</h1>
+                <h1>{movie?.sum_of_ratin}%</h1>
                 <p style={{ marginBottom: 0 }}>
-                  {Math.ceil(movie?.title)} Ratings
+                  {Math.ceil(movie?.no_review_ration)} Ratings
                 </p>
               </div>
               <div className="container__movieDetail_ratingButton">
@@ -155,16 +178,14 @@ function MoviePage() {
               </div>
               <div style={{ color: "white", fontSize: 18 }}>
                 <h5 style={{ color: "white", fontSize: 18 }}>
-                  {`${movie?.Duration} hr - ${
-                    movie?.Genre
-                  } - ${movie?.startDate?.slice(0, 4)}`}
+                  {`${movie?._doc?.Duration} hr - ${
+                    movie?._doc?.Genre
+                  } - ${movie?._doc?.startDate?.slice(0, 4)}`}
                 </h5>
               </div>
               <div
                 className="BookButton"
-                onClick={() =>
-                  navigate(`/buytickets/${movie._id}/select_screen`)
-                }
+                onClick={() => selectedMovieToState()}
               >
                 <button>Book Tickets</button>
               </div>
@@ -173,7 +194,7 @@ function MoviePage() {
           <div className="middleContainer">
             <div>
               <h1>About the movie</h1>
-              <p>{movie?.description}</p>
+              <p>{movie?._doc?.description}</p>
             </div>
             <hr />
             <div>
@@ -305,7 +326,11 @@ function MoviePage() {
                   Write something about movie
                 </Typography>
                 <hr />
-                <TextArea value={tValue} onChange={(e)=>setTvalue(e.target.value)} rows={4} />
+                <TextArea
+                  value={tValue}
+                  onChange={(e) => setTvalue(e.target.value)}
+                  rows={4}
+                />
               </div>
               <button
                 onClick={handleRating}
@@ -328,7 +353,7 @@ function MoviePage() {
           </Fade>
         </Modal>
       </div>
-      <ShowReview Review={movie?.Review}/>
+      <ShowReview Review={reiview?.Review} />
     </div>
   );
 }

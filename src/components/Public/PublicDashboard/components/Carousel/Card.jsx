@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { useHistory, useNavigate } from 'react-router';
-import { movieInfo } from '../../../../../action/movieAction';
+import { movieInfo, movieInfoStoreToState } from '../../../../../action/movieAction';
 import styles from '../../../styling/Card.module.css';
 
 function Card(movie) {
@@ -10,7 +10,6 @@ function Card(movie) {
     const navigate = useNavigate()
         const handleChange = (movie) => {
             console.log(movie)
-            dispatch(movieInfo(movie))
             navigate(`/moviepage/${movie._id}`)
         }
     return (

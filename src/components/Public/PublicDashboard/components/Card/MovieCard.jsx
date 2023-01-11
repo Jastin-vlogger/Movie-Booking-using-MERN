@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 // import "./movie.css";
 import { useNavigate } from "react-router-dom";
-import { movieInfo } from "../../../../../action/movieAction";
+import { movieInfo, movieInfoStoreToState } from "../../../../../action/movieAction";
 
 const CardInfo = styled(CardContent)(({ theme }) => ({
   "&:last-child": {
@@ -20,7 +20,7 @@ const MovieCard = ({ movie }) => {
 
   const openMoviePage = (movie)=>{
     console.log(movie)
-    dispatch(movieInfo(movie))
+    dispatch(movieInfoStoreToState(movie))
     navigate('/moviepage')
   }
   return (
