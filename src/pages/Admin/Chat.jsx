@@ -17,42 +17,49 @@ import styled from "styled-components";
 import { io } from "socket.io-client";
 
 function Chat() {
+  const host = "http://localhost:3008"
   const navigate = useNavigate();
   const [cookies] = useCookies([]);
   const socket = useRef();
-  // const socket = io.connect("http://localhost:3008");
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
 
-  useEffect(() => {
-    async function setUser() {
-      const token = cookies.adminToken;
-      const decoded = await jwt_decode(token);
-      console.log("adminnnnnnnnnnn", decoded.id);
-      setCurrentUser(decoded.id);
+  useEffect( () => {
+    async function setUser(){
+        const token = cookies.adminToken;
+        const decoded = await jwt_decode(token);
+        console.log("adminnnnnnnnnnn",decoded.id)
+        setCurrentUser(decoded.id);
     }
-    setUser();
+    setUser()
   }, []);
-
+  
+  
   useEffect(() => {
     if (currentUser) {
-        socket.current = io(axios);
-        socket.current.emit("add-user", currentUser);
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser);
     }
   }, [currentUser]);
 
+
   useEffect(() => {
-    const fetchData = async () => {
-      //   const token = cookies.TheaterToken;
-      //   const decoded = await jwt_decode(token);
-      //   const id = decoded.id;
-      const { data } = await axios.get(`/api/theater/allTheater`);
-      console.log(data);
-      setContacts(data);
-    };
+    async function fetchData(){
+      const token = cookies.adminToken;
+      const decoded = await jwt_decode(token);
+      console.log("jwt",decoded.id)
+      const id =(decoded.id)
+      // console.log("state",currentUser);
+      // const data = await axios.get(`http://localhost:3001/theater/allTheater/${id}`);
+      const data = await axios.get(`api/theater/allTheater`);
+      // console.log(data);
+      setContacts(data.data)
+    }
     fetchData();
-  }, []);
+  }, [])
+  
+
 
   // useEffect(async () => {
   //   // if (currentUser) {
@@ -65,7 +72,6 @@ function Chat() {
   //   // }
   //   // }
   // }, [currentUser]);
-
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };

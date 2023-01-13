@@ -80,7 +80,7 @@ function MoviePage() {
   const handleRating = () => {
     setTvalue(null);
     setRvalue(0);
-    dispatch(putMovies(movie._id, rValue, tValue));
+    dispatch(putMovies(movie._doc._id, rValue, tValue));
     setOpen(false);
     setRefresh(true);
   };
@@ -88,7 +88,7 @@ function MoviePage() {
   function selectedMovieToState() {
     // setSelectedShowtime(showtime);
     dispatch(movieInfoStoreToState(movie));
-    navigate(`/buytickets/${movie._id}/select_screen`)
+    navigate(`/buytickets/${movie._doc._id}/select_screen`)
   }
 
 

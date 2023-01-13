@@ -17,9 +17,9 @@ function Seating({
   handleCloseSeatingModal,
   handleCloseSeatingButton,
 }) {
-  const movieInformation = useSelector(state => state.movie)
-  console.log(movieInformation)
-  const {movie} = movieInformation
+  const movieInformation = useSelector((state) => state.movie);
+  console.log(movieInformation);
+  const { movie } = movieInformation;
   const [seatActive, setSeatActive] = React.useState(seatingActive);
   const [active, setActive] = React.useState(false);
   const [rowsData, setRowData] = React.useState(rows);
@@ -31,17 +31,21 @@ function Seating({
   const { loading, seat } = seats;
 
   //seating array
-  console.log(seat);
+  console.log(seat.length);
   console.log(rowsData);
-  for (const obj of rowsData) {
-    const matchingObject = seat.find(o => o.id === obj.id);
-    if (matchingObject) {
-      obj.seat = matchingObject.seat;
-      obj.isReserved = matchingObject.isReserved;
+  if (seat.length >= 1) {
+    
+    console.log(seat.length);
+    for (const obj of rowsData) {
+      const matchingObject = seat.find((o) => o.id === obj.id);
+      if (matchingObject) {
+        obj.seat = matchingObject.seat;
+        obj.isReserved = matchingObject.isReserved;
+      }
     }
+    console.log(rowsData);
   }
-  console.log(rowsData)
-  
+
   const { dateInfo } = date;
 
   const monthNames = [
@@ -114,9 +118,7 @@ function Seating({
       <div className="seatingModal__nav">
         <div>
           <div>
-            <h4 style={{ color: "white", fontSize: 20 }}>
-              {movie.title}
-            </h4>
+            <h4 style={{ color: "white", fontSize: 20 }}>{movie.title}</h4>
             <h5 style={{ color: "white" }}>{dateInfo.name}</h5>
           </div>
           <div>
@@ -130,8 +132,7 @@ function Seating({
         </div>
         <div>
           <h3>
-            {dateInfo.time} {monthNames[new Date().getMonth()]}{" "}
-            {movie.Duration}
+            {dateInfo.time} {monthNames[new Date().getMonth()]} {movie.Duration}
           </h3>
         </div>
       </div>

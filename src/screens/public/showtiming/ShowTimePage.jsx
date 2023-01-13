@@ -97,7 +97,7 @@ function ShowTimePage({ filters }) {
     dispatch(
       getSeatInformation(
         dateOnly,
-        movie._id,
+        movie._doc._id,
         dateInfo[0].data.theaterId,
         gotTime
       )

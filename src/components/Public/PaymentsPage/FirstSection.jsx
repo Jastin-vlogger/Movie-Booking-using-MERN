@@ -60,20 +60,6 @@ function FirstSection({ handlePayment }) {
               <CardElement />
 
               <div className={styles.otherDetails}>
-                {/* <div>
-                                <div style={{fontSize:'13px', color:'gray'}}>Expiry</div>
-                                <div style={{display:'flex'}}>
-                                    <input type="text" placeholder="MM" value="06"/>
-                                    <input type="text" placeholder="YY" value="23"/>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style={{fontSize:'13px', color:'gray'}}>CVV</div>
-                                <div>
-                                    < input style={{width:"50px"}} type="text" placeholder="CVV"  value="933"/>
-                                </div>
-                            </div> */}
               </div>
             </div>
 

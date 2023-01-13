@@ -28,31 +28,31 @@ export default function ChatContainer({ currentChat, socket, currentUser }) {
     getmessage();
   }, [currentChat]);
 
+
   const handleSendMsg = async (msg) => {
-    console.log(currentUser, currentChat._id, msg);
     await axios.post("/message/addmsg", {
       from: currentUser,
       to: currentChat._id,
       message: msg,
     });
 
-    // socket.current.emit('send-msg',{
-    //   to:currentChat._id,
-    //   from:currentUser,
-    //   message:msg,
-    // })
+    socket.current.emit("send-msg", {
+      to: currentChat._id,
+      from: currentUser,
+      message: msg,
+    });
     const msgs = [...messages];
     msgs.push({ fromSelf: true, message: msg });
     setmessages(msgs);
   };
 
-  // useEffect(() => {
-  //   if (socket.current) {
-  //     socket.current.on("msg-recieve", (msg) => {
-  //       setArrivalMessage({ fromSelf: false, message: msg });
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-recieve", (msg) => {
+        setArrivalMessage({ fromSelf: false, message: msg });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     arrivalMessage && setmessages((prev) => [...prev, arrivalMessage]);

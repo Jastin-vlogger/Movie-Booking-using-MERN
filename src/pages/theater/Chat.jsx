@@ -12,10 +12,11 @@ import jwt_decode from "jwt-decode";
 import ChatContainer from "../../screens/theaters/chat/ChatContainer";
 import Welcome from "../../screens/theaters/chat/Welcome";
 import Contacts from "../../screens/theaters/chat/Contacts";
+import {io} from 'socket.io-client'
 import Sidebar from "../../screens/theaters/global/Sidebar";
 
 function Chat() {
-  const host = "http://localhost:3001";
+  const host = "http://localhost:3008"
   const navigate = useNavigate();
   const [cookies] = useCookies([]);
   const socket = useRef();
@@ -23,35 +24,40 @@ function Chat() {
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
 
+  useEffect( () => {
+    async function setUser(){
+        const token = cookies.TheaterToken;
+        const decoded = await jwt_decode(token);
+        setCurrentUser(decoded.id);
+       
+    }
+    setUser()
+  }, []);
+  
+  
   useEffect(() => {
-    async function setUser() {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser);
+    }
+  }, [currentUser]);
+
+
+  useEffect(() => {
+    async function fetchData(){
       const token = cookies.TheaterToken;
       const decoded = await jwt_decode(token);
-      setCurrentUser(decoded.id);
+     
+      const id =(decoded.id)
+      
+      const data = await axios.get(`/api/theater/allAdminStaff`);
+   
+      setContacts(data.data)
     }
-    setUser();
-  }, []);
-
-  //   useEffect(() => {
-  //     if (currentUser) {
-  //       //   socket.current = io(host);
-  //       //   socket.current.emit("add-user", currentUser);
-  //     }
-  //   }, [currentUser]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      //   const token = cookies.TheaterToken;
-      //   const decoded = await jwt_decode(token);
-
-      //   const id = decoded.id;
-
-      const { data } = await axios.get(`/api/theater/allAdminStaff`);
-      console.log(data);
-      setContacts(data);
-    };
     fetchData();
-  }, []);
+  }, [])
+  
+
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);

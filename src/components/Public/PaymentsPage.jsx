@@ -73,6 +73,7 @@ function PaymentsPage({ proceed }) {
   const { userInfo } = user;
   const { dateInfo, silver } = booking_details;
   const { movieInformation } = movieInfo;
+  console.log(movieInformation)
   const handleClose = () => {
     setState(false);
   };
@@ -95,7 +96,7 @@ function PaymentsPage({ proceed }) {
       ticketPrice: "120",
       seats: silver,
       total: booking_details.price,
-      movieId: movieInformation._id,
+      movieId: movieInformation._doc._id,
       phone: userInfo.phone,
       showDate: dateOnly,
       bookedDate: new Date(),
