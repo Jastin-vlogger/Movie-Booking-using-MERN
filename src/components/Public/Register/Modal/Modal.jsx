@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import "./modal.css";
 import Modal from "@mui/material/Modal";
@@ -8,9 +8,15 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "../../../../axios/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { registration } from "../../../../action/userAction";
+import { otpValidate, registration } from "../../../../action/userAction";
 import { useEffect } from "react";
-import Loading from "../../../Loading/Loading";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Slide,
+  TextField,
+} from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -23,28 +29,31 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function Modals() {
   const [open, setOpen] = React.useState(false);
+  const [state, setState] = React.useState(false);
+  const [otp, setOtp] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
-  // const userinfo = useSelector((state) => state.userLogin);
-  // const { loading, userInfo, error } = userinfo;
-  // console.log(userInfo ,"njannnn userinfo",loading)
-  const userLogin = useSelector(state => state.userLogin)
-  const {userInfo} = userLogin
-  console.log(userInfo) 
-
-  useEffect(()=>{
-    if(userInfo){
-      console.log('im here')
+  const userLogin = useSelector((state) => state.userInformation);
+  console.log(userLogin);
+  useEffect(() => {
+    if (userLogin?.userInfo) {
       handleClose();
-      navigate('/')
+      setState(false);
+      navigate("/");
+    } else {
+      setError("Check your otp");
     }
-  },[navigate, userInfo])
+  }, [navigate, userLogin?.userInfo]);
 
   const {
     register,
@@ -52,18 +61,26 @@ function Modals() {
     formState: { errors },
   } = useForm();
 
-  const google = () => {
-    window.open("http://localhost:3008/auth/google", "_self");
-  };
-
+  // const google = () => {
+  //   window.open("http://localhost:3008/auth/google", "_self");
+  // };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setEmail(data);
+    setState(true);
     dispatch(registration(data));
   };
 
   const handleclosex = () => {
     handleClose();
+  };
+
+  const otpSubmit = () => {
+    const data = {
+      otp,
+      email,
+    };
+    dispatch(otpValidate(data));
   };
 
   return (
@@ -87,25 +104,23 @@ function Modals() {
               <div className="ui divider"></div>
               <div className="ui form">
                 <div className="field">
-                  <label>Phone Number</label>
+                  <label>Email</label>
                   <input
-                    type="tel"
-                    placeholder="Phone number"
-                    {...register("phone", {
+                    type="email"
+                    className="form-control"
+                    placeholder="Email"
+                    {...register("email", {
                       required: true,
-                      minLength: 10,
-                      maxLength: 10,
+                      pattern:
+                        /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i,
                     })}
                   />
                   <span className="text-danger">
-                    {errors.phone?.type === "required" && (
-                      <span>Phone Number is required</span>
+                    {errors.email?.type === "required" && (
+                      <span>Email is required</span>
                     )}
-                    {errors.phone?.type === "minLength" && (
-                      <span>Phone Number must have 10 digits</span>
-                    )}
-                    {errors.phone?.type === "maxLength" && (
-                      <span>Phone Number must have 10 digits</span>
+                    {errors.email?.type === "pattern" && (
+                      <span>Email must be properly fomatted</span>
                     )}
                   </span>
                 </div>
@@ -114,13 +129,51 @@ function Modals() {
                 </button>
               </div>
             </form>
-            <hr></hr>
+            {/* <hr></hr>
             <div className="fluid ui button blue" onClick={google}>
               Google
-            </div>
+            </div> */}
           </div>
         </Box>
       </Modal>
+
+      <Dialog
+        aria-labelledby="customized-dialog-title"
+        open={state}
+        TransitionComponent={Transition}
+      >
+        <DialogContent dividers>
+          <div
+            style={{
+              textAlign: "center",
+              color: "white",
+              background: "white",
+              padding: "50px 40px",
+              borderRadius: "10px",
+            }}
+          >
+            <h1 style={{ color: "black" }}>Enter your OTP</h1>
+            <TextField
+              id="filled-basic"
+              label="OTP"
+              variant="filled"
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          </div>
+          {error && <span style={{ color: "red" }}>{error}</span>}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            variant="contained"
+            color="secondary"
+            onClick={otpSubmit}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <ToastContainer />
     </div>
   );

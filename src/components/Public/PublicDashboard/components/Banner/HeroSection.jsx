@@ -35,7 +35,6 @@ function HeroSection() {
   const movies = useSelector((state) => state.getMovies);
   const { loading, movieInfo, error } = movies;
   // const hello = movieInfo.slice(2)
-  // console.log(hello)
 
   const dispatch = useDispatch();
 

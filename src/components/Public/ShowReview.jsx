@@ -7,9 +7,10 @@ import { Pagination } from "swiper";
 import StarIcon from "@mui/icons-material/Star";
 import { useSelector } from "react-redux";
 
-function ShowReview({Review}) {
+function ShowReview({ Review }) {
   return (
-    <div className="mt-5">
+    <>
+      <div className="mt-5 container">
         <Swiper
           slidesPerView={2}
           spaceBetween={30}
@@ -20,7 +21,7 @@ function ShowReview({Review}) {
           className="swiperr "
         >
           {Review?.map((item, index) => (
-            <SwiperSlide className="bg-black">
+            <SwiperSlide className="bg-secondary">
               <div className="flex flex-col w-full">
                 <div className="head flex justify-between text-white text-white-800 w-full px-5">
                   <div className="user font-bold">User</div>
@@ -30,16 +31,15 @@ function ShowReview({Review}) {
                   </div>
                 </div>
                 <div className=" px-5 mt-5 ">
-                  <p className="text-white text-left">
-                    {item.message}
-                  </p>
+                  <p className="text-white text-left">{item.message}</p>
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
-  )
+    </>
+  );
 }
 
-export default ShowReview
+export default ShowReview;

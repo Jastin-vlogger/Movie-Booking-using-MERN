@@ -5,11 +5,9 @@ import { movieInfo, movieInfoStoreToState } from '../../../../../action/movieAct
 import styles from '../../../styling/Card.module.css';
 
 function Card(movie) {
-    console.log(movie)
     const dispatch = useDispatch()
     const navigate = useNavigate()
         const handleChange = (movie) => {
-            console.log(movie)
             navigate(`/moviepage/${movie._id}`)
         }
     return (

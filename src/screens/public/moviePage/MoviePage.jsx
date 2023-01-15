@@ -10,7 +10,7 @@ import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import { Carousel } from "react-bootstrap";
-import Loading from '../../../components/Loading/Loading'
+import Loading from "../../../components/Loading/Loading";
 import {
   getMovieById,
   getMovieReviewById,
@@ -34,12 +34,13 @@ function MoviePage() {
   // const { movieInformation } = movieInfo;
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const user = useSelector((state) => state.userInformation);
+  console.log(user);
 
   function handleDateChange(date) {
     setSelectedDate(date);
   }
 
-  
   const [rValue, setRvalue] = React.useState(0);
   const [tValue, setTvalue] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -68,7 +69,12 @@ function MoviePage() {
   }, [refresh, dispatch]);
 
   const handleOpen = () => {
-    setOpen(true);
+    if (user?.userInfo) {
+      setOpen(true);
+    } else {
+      alert("Please login to book your tickets");
+      // setAction(true)
+    }
   };
 
   const handleClose = () => {
@@ -84,39 +90,17 @@ function MoviePage() {
     setOpen(false);
     setRefresh(true);
   };
-  
-  function selectedMovieToState() {
-    // setSelectedShowtime(showtime);
-    dispatch(movieInfoStoreToState(movie));
-    navigate(`/buytickets/${movie._doc._id}/select_screen`)
-  }
 
-
-  // const handleClick = () => {
-  //   if (isAuth) {
-  //     // history.push(`/booktickets/${id}`)
-
-  //   } else {
-  //     alert("Please login to book your tickets")
-  //     setAction(true)
-  //   }
-  // }
-
-  const handleCloseLogin = (number) => {
-    if (+number === 7275584516) {
-      setAuth(true);
-      alert("Successfully Logged in");
-    } else if (+number === 123456789) {
-      setAuth(true);
-      alert("Successfully Logged in");
-    } else if (+number === "") {
-      alert("Please type your number");
-      handleCloseLogin(number);
+  const selectedMovieToState = () => {
+    if (user?.userInfo) {
+      dispatch(movieInfoStoreToState(movie));
+      navigate(`/buytickets/${movie._doc._id}/select_screen`);
     } else {
-      alert("You are not registered");
+      alert("Please login to book your tickets");
+      // setAction(true)
     }
-    setAction(false);
   };
+
   React.useEffect(() => {
     // dispatch(storeAuth(auth))
   }, [auth]);

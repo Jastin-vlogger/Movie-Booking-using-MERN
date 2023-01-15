@@ -19,7 +19,6 @@ const MovieCard = ({ movie }) => {
   const dispatch = useDispatch()
 
   const openMoviePage = (movie)=>{
-    console.log(movie)
     dispatch(movieInfoStoreToState(movie))
     navigate('/moviepage')
   }

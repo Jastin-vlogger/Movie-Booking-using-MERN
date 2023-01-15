@@ -16,6 +16,7 @@ import TrailerPage from "./pages/Public/TrailerPage";
 import ShowTime from "./pages/Public/ShowTime";
 import Chat from "./pages/theater/Chat";
 import AdminChat from "./pages/Admin/Chat";
+import SeeAll from "./pages/Public/SeeAll";
 
 function Routess() {
   return (
@@ -24,6 +25,7 @@ function Routess() {
       <Route exact path="/moviepage/:id" element={<Moviepage />} />
       <Route exact path="/moviepage/trailer" element={<TrailerPage />} /> 
       <Route exact path="/buytickets/:id/select_screen" element={<ShowTime />} /> 
+      <Route exact path="/ncr/movies" element={<SeeAll />} /> 
 
       {/* admin routes */}
       <Route exact path="/admin" element={<Dashboards />} />
@@ -41,6 +43,8 @@ function Routess() {
       <Route exact path="/theater/screens" element={<Screen />} />
       <Route exact path="/theater/addShows" element={<AddShow />} />
       <Route exact path="/theater/messages" element={<Chat />} />
+
+      <Route path="*" element={() => '404 NOT FOUND'} />
      
     </Routes>
   );
