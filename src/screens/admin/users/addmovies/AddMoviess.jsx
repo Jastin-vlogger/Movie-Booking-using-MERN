@@ -1,41 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import "./addmovies.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../axios/axios";
+import UploadWidget from "./UploadWidget";
 
 function AddMoviess() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [url, updateUrl] = useState();
+  const [error, updateError] = useState();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-console.log(errors)
+  console.log(errors);
   const onSubmit = async (data) => {
     console.log(data);
-    const formData = new FormData();
-    formData.append("image", data.file[0]);
+    data.posterImage = url;
     axios
       .post("/api/admin/movieinfo", data)
-      .then(async(response) => {
+      .then(async (response) => {
         console.log(response.data._id);
-        let id = response.data._id
-        await axios.post(`/api/admin/movieImage/upload/${id}`,formData,{
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }).then(({data})=>{
-          console.log(data)
-          navigate('/admin/movies')
-        })
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-
+  function handleOnUpload(error, result, widget) {
+    if (error) {
+      updateError(error);
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+    console.log("result................", result);
+    updateUrl(result?.info?.secure_url);
+  }
 
   return (
     <>
@@ -195,35 +199,29 @@ console.log(errors)
                   {errors.startDate?.type === "required" && (
                     <span>Date Number is required</span>
                   )}
-                  
                 </span>
               </div>
             </div>
             <div className="row">
               <div className="col-md-6 mt-md-0 mt-3">
-                <input
-                  type="file"
-                  className="form-control"
-                  {...register("file")}
-                />
-                <span className="text-danger"></span>
-                {/* <input
-                  id="imageInput"
-                  type="file"
-                  hidden
-                  onChange={handleUpload}
-                />
-                <Button
-                  as="label"
-                  htmlFor="imageInput"
-                  colorScheme="blue"
-                  variant="contained"
-                  cursor="pointer"
-                  isLoading={uploading}
-                >
-                  Upload
-                </Button> */}
-               
+                <UploadWidget onUpload={handleOnUpload}>
+                  {({ open }) => {
+                    function handleOnClick(e) {
+                      console.log("clicked");
+                      e.preventDefault();
+                      open();
+                    }
+                    return (
+                      <button onClick={handleOnClick}>Upload an Image</button>
+                    );
+                  }}
+                </UploadWidget>
+
+                {error && <p>{error}</p>}
+                  
+                {/* <div className={{ width: "50px", height: "10px" }}>
+                  {url && <img src={url} alt="Uploadedimage" />}
+                </div> */}
               </div>
               <div className="col-md-6 mt-md-0 mt-3">
                 <label>youtube link</label>
@@ -243,7 +241,9 @@ console.log(errors)
                     <span>Youtube Link is required</span>
                   )}
                   {errors.YoutubeLink?.type === "minLength" && (
-                    <span>Youtube Link must morethan or equal to 4 Character</span>
+                    <span>
+                      Youtube Link must morethan or equal to 4 Character
+                    </span>
                   )}
                   {errors.YoutubeLink?.type === "maxLength" && (
                     <span>Youtube Link must less than 50 Character</span>

@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-// import Dropdown from "react-bootstrap/Dropdown";
-import Modal from "../Register/Modal/Modal";
+import { Link, useNavigate } from "react-router-dom";
+import Modals from "../Register/Modal/Modal";
 import "./Navbar.css";
 import { useSelector } from "react-redux";
-import { NavDropdown } from "react-bootstrap";
 import { Button } from "../PublicDashboard/components/Buttton/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import { useCookies } from "react-cookie";
@@ -22,17 +20,30 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import axios from "../../../axios/axios";
+import { Modal } from "antd";
+
+const useDeBounce = (value, time = 250) => {
+  const [deBonuceVal, setDeBouncVal] = useState(value);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDeBouncVal(value);
+    }, time);
+    return () => clearTimeout(timeout);
+  }, [value, time]);
+  return deBonuceVal;
+};
 
 function Navbar() {
-  const [cookies] = useCookies([]);
   const [query, setQuery] = React.useState("");
+  const [suggestion, setSuggestion] = useState([]);
+  const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
   const [open, setOpen] = useState(false);
-
   const user = useSelector((state) => state.userInformation);
-  console.log(user)
+  const deBonuceVal = useDeBounce(query);
+  const [modal1Open, setModal1Open] = useState(false);
 
   const logout = () => {
     // window.open("http://localhost:3008/auth/logout", "_self");
@@ -57,6 +68,28 @@ function Navbar() {
   useEffect(() => {
     showButton();
   }, []);
+
+  useEffect(() => {
+    console.log(deBonuceVal);
+    if (!deBonuceVal.trim()) {
+      setSuggestion([]);
+      return;
+    } else {
+      axios.get(`/api/user/search/${deBonuceVal}`).then(({ data }) => {
+        console.log(data);
+        setSuggestion(data);
+      });
+    }
+  }, [deBonuceVal]);
+
+  const moviePageRedirection = (id) => {
+    console.log(id);
+    navigate(`/moviepage/${id}`);
+  };
+
+  const openModal = () => {
+    setModal1Open(true);
+  };
 
   window.addEventListener("resize", showButton);
   const toggleDrawer = () => (event) => {
@@ -90,15 +123,6 @@ function Navbar() {
       listText: "Account & Settings",
     },
   ];
-
-  // useEffect(()=>{
-  //   // async function verify(){
-  //   //   const {data} =await axios.get('/login/success')
-  //   //   console.log(data)
-
-  //   // }
-  //   // verify()
-  // },[])
 
   const list = () => (
     <Box
@@ -157,15 +181,45 @@ function Navbar() {
           <div className="menu-icon" onClick={handleNav}>
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
-          <div className="searchBar">
-            <SearchIcon />
-            <input
-              type="text"
-              placeholder="Search for Movies"
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
+            <li className="nav-item">
+              <Link className="nav-links" onClick={openModal}>
+                <SearchIcon />
+              </Link>
+            </li>
+            <Modal
+              title="Search for any movie"
+              centered
+              open={modal1Open}
+              onOk={() => setModal1Open(false)}
+              footer={null}
+              onCancel={() => setModal1Open(false)}
+            >
+              <div className="search">
+                <input
+                  type="text"
+                  placeholder="Search for Movies"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+
+                {suggestion &&
+                  suggestion.map((item) => (
+                    <div style={{ cursor: "pointer" }}>
+                      <Box
+                        component="span"
+                        sx={{ display: "block", color: "primary.main" }}
+                        key={item._id}
+                        onClick={() => {
+                          console.log("clicked");
+                          moviePageRedirection(item._id);
+                        }}
+                      >
+                        {item.title}
+                      </Box>
+                    </div>
+                  ))}
+              </div>
+            </Modal>
             <li className="nav-item">
               <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 Home
@@ -176,12 +230,6 @@ function Navbar() {
                 New Releases
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Stream
-              </Link>
-            </li>
-
             <li className="nav-item">
               {user?.userInfo ? (
                 <li className="nav-links">
@@ -199,14 +247,9 @@ function Navbar() {
                   </SwipeableDrawer>
                 </li>
               ) : (
-                <>
-                  <li className="nav-links">
-                    <Modal
-                    // open={openModal}
-                    // onClose={() => setOpenModal(false)}
-                    />
-                  </li>
-                </>
+                <li className="nav-links">
+                  <Modals />
+                </li>
               )}
             </li>
           </ul>

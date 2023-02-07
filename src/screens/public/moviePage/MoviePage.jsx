@@ -121,7 +121,7 @@ function MoviePage() {
           >
             <div className="container__card">
               <img
-                src={`http://localhost:3008/movies/${movie?._doc?._id}.jpg`}
+                src={movie?._doc?.posterImage}
                 alt="title"
               />
             </div>

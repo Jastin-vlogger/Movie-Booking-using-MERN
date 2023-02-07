@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import { makeStyles } from '@mui/material/styles';
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -62,18 +62,17 @@ function PaymentsPage({ proceed }) {
   const navigate = useNavigate();
   const booking_details = useSelector((state) => state.dateInformationSelected);
   const movieInfo = useSelector((state) => state.movieInfo);
-  const user = useSelector((state) => state.userLogin);
+  const user = useSelector((state) => state.userInformation);
+  console.log(user);
   const selectDate = useSelector((state) => state.date);
   const payment = useSelector((state) => state.payment);
-  console.log(payment)
+  console.log(payment?.paymentSucess?.qrcode);
   const { loading, paymentSuccess } = payment;
-  console.log(paymentSuccess);
-  // const { data, qrcode, status } = paymentSuccess;
   const { date } = selectDate;
-  const { userInfo } = user;
+
   const { dateInfo, silver } = booking_details;
   const { movieInformation } = movieInfo;
-  console.log(movieInformation)
+  console.log(movieInformation);
   const handleClose = () => {
     setState(false);
   };
@@ -97,7 +96,7 @@ function PaymentsPage({ proceed }) {
       seats: silver,
       total: booking_details.price,
       movieId: movieInformation._doc._id,
-      phone: userInfo.phone,
+      phone: user?.userInfo,
       showDate: dateOnly,
       bookedDate: new Date(),
       paymentId: id,
@@ -108,13 +107,17 @@ function PaymentsPage({ proceed }) {
         // dispatch(getBookingDetails());
       }
     });
+  };
+  const handleMove = () => {
+    
+    navigate("/");
+  };
+
+  useEffect(() => {
     setTimeout(() => {
       setCounter(false);
     }, 2000);
-  };
-  const handleMove = () => {
-    navigate("/");
-  };
+  }, [payment]);
 
   const PUBLIC_KEY =
     "pk_test_51MOZPkSFXMBK3kKaeJUxzL8qetea0RfCUAbS8VD0pGF7Q2qeVzwe2xvcaeBqcj8wOMSFTiJOdbVB4mGvrOwWJm1R00QbCdUXZr";
@@ -195,7 +198,7 @@ function PaymentsPage({ proceed }) {
                 borderRadius: "5px",
               }}
             >
-              <img src={payment.paymentSuccess?.qrcode} alt="hello ser" />
+              <img src={payment?.paymentSucess?.qrcode} alt="hello ser" />
               <h1>Congratulations!</h1>
               <div style={{ fontSize: "20px" }}>We have got your tickets</div>
             </div>
